@@ -4,6 +4,8 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -14,6 +16,7 @@ public class StatisticsTest {
 
 
     public static final double DELTA = 0.01;
+    public static final List<Double> VALUES = List.of(1d, 2d, 3d, 4d);
 
     @Test
     public void whenRegression_thenCorrect() {
@@ -33,29 +36,27 @@ public class StatisticsTest {
     @Test
     public void whenDescriptiveStatistics_thenCorrect() {
         DescriptiveStatistics ds=new DescriptiveStatistics();
-        addValues(ds);
+        addValues(ds, VALUES);
 
         System.out.println("ds.getMean() = " + ds.getMean());
         System.out.println("ds.getStandardDeviation() = " + ds.getStandardDeviation());
-        System.out.println("ds.getPercentile(0.9) = " + ds.getPercentile(0.9));
+        System.out.println("p10 = " + ds.getPercentile(10));
+        System.out.println("p90 = " + ds.getPercentile(90));
 
         assertEquals(2.5,ds.getMean(),DELTA);
 
 
     }
 
-    private static void addValues(DescriptiveStatistics ds) {
-        ds.addValue(1);
-        ds.addValue(2);
-        ds.addValue(3);
-        ds.addValue(4);
+    private static void addValues(DescriptiveStatistics ds, List<Double> values) {
+        values.forEach(ds::addValue);
     }
 
     @Test
     public void whenDescriptiveStatisticsWindow2_thenCorrect() {
         DescriptiveStatistics ds=new DescriptiveStatistics();
         ds.setWindowSize(2);
-        addValues(ds);
+        addValues(ds, VALUES);
 
         System.out.println("ds.getMean() = " + ds.getMean());
         System.out.println("ds.getStandardDeviation() = " + ds.getStandardDeviation());

@@ -63,7 +63,7 @@ public class TestSumOfThree {
         int nofCalls = 1000;
         for (int i = 0; i < nofCalls; i++) {
             optimum = TestHelper.gradientOptimize(
-                    optimizer,sumOfThree.getObjectiveFunction(),sumOfThree.getFiniteDiffGradient(),
+                    optimizer,sumOfThree.getObjectiveFunction(),sumOfThree.getGradientFactory(),
                     initialGuess, NOF_EVAL_MAX);
         }
 
@@ -86,7 +86,7 @@ public class TestSumOfThree {
         PointValuePair optimum =
                 optimizer.optimize(new MaxEval(NOF_EVAL_MAX),
                         sumOfThree.getObjectiveFunction(),
-                        sumOfThree.getFiniteDiffGradient(),
+                        sumOfThree.getGradientFactory(),
                         GoalType.MINIMIZE,
                         new SimpleBounds(lowerBounds, upperBounds),  //gives MathUnsupportedOperationException
                         new InitialGuess(initialGuess));

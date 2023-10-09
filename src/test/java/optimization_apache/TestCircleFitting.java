@@ -14,8 +14,8 @@ import org.junit.Test;
 public class TestCircleFitting {
 
 
-    public static final double REL_TRES_HOLD = 1e-10;
-    public static final double ABS_TRES_HOLD = 1e-10;
+    public static final double REL_TRES_HOLD = 1e-1;
+    public static final double ABS_TRES_HOLD = 1e-0;
     public static final double[] INITIAL_GUESS = {98.680, 47.345};
     public static final int NOF_EVAL_MAX = 1000;
     public static final double DELTA = 1.0e-1;

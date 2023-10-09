@@ -11,17 +11,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * sum=x0*A0+x1*A1+x2*A2
- * wrt
- * LB<xi<UB
- * x0+x1+x2<sumMax
- * <p>
- * The consequence is that the most effecting variable is as large as possible, the rest are zero
- * Hence opt point is {0, 0, 1.0};
- */
-
-public class SumOfThree {
+public class SumOfThreeModel {
     public static final double A0 = -0, A1 = -1, A2 = -2;
     public static final double LB = 0, UB = 1;
     public static final double SUM_MAX = 1;
@@ -29,13 +19,15 @@ public class SumOfThree {
     public static class Variables {
         public double[] xList;
     }
+    public double eps;
 
     BarrierFunctions barrier;
     FiniteDiffGradientFactory gradientFactory;
 
-    public SumOfThree(double penCoeff, double eps) {
+    public SumOfThreeModel(double penCoeff, double eps) {
         this.barrier = new BarrierFunctions(penCoeff, "quad");
         this.gradientFactory = new FiniteDiffGradientFactory(getObjectiveFunction(), eps);
+        this.eps=eps;
     }
 
     public ObjectiveFunction getObjectiveFunction() {
@@ -46,7 +38,7 @@ public class SumOfThree {
         });
     }
 
-    private static double getObjective(Variables vars) {
+     public double getObjective(Variables vars) {
         return A0 * vars.xList[0] + A1 * vars.xList[1] + A2 * vars.xList[2];
     }
 
@@ -54,7 +46,7 @@ public class SumOfThree {
      * the constraint is violated (i.e., ci(vars) > 0)
      */
 
-    private double getPenalty(Variables vars) {
+    public double getPenalty(Variables vars) {
         int nofVars = vars.xList.length;
         double[] lowerBoundsConstrValues = BoundConstraints.getLowerBoundConstraintValues(vars.xList, LB);
         double[] upperBoundsConstrValues = BoundConstraints.getUpperBoundConstraintValues(vars.xList, UB);
@@ -79,5 +71,4 @@ public class SumOfThree {
     public ObjectiveFunctionGradient getGradientFactory() {
         return gradientFactory.getFiniteDiffGradient();
     }
-
 }
