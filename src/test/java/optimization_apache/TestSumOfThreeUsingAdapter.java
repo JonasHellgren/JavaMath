@@ -1,7 +1,8 @@
 package optimization_apache;
 
-import apache_common.OptimizeAdapter;
-import common.CpuTimer;
+import optimization_apache.interfaces_adapter.AdapterInterface;
+import optimization_apache.interfaces_adapter.OptimizeAdapter;
+import optimization_apache.interfaces_adapter.OptimizationModelInterface;
 import optimization_apache.models.SumOfThreeModel;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.nonlinear.scalar.MultivariateOptimizer;
@@ -25,9 +26,8 @@ public class TestSumOfThreeUsingAdapter {
     public void givenAdapter_thenCorrectOptimum() {
         MultivariateOptimizer optimizer =
                 TestHelper.getConjugateGradientOptimizer(RELATIVE_THRESHOLD, ABSOLUTE_THRESHOLD);
-        SumOfThreeModel sumOfThree = new SumOfThreeModel(PEN_COEFF, EPS);
-
-        OptimizeAdapter adapter = new OptimizeAdapter(sumOfThree);
+        OptimizationModelInterface model = new SumOfThreeModel(PEN_COEFF, EPS);
+        AdapterInterface adapter = new OptimizeAdapter(model);
         PointValuePair optimum = TestHelper.gradientOptimize(
                 optimizer, adapter.getObjectiveFunction(), adapter.getGradient(),
                 initialGuess, NOF_EVAL_MAX);
