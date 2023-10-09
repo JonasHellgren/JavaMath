@@ -4,9 +4,7 @@ import common.ArrayUtil;
 import common.ListUtils;
 import optimization_apache.helpers.BarrierFunctions;
 import optimization_apache.helpers.BoundConstraints;
-import optimization_apache.helpers.FiniteDiffGradientFactory;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
-import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +20,9 @@ public class SumOfThreeModel {
     public double eps;
 
     BarrierFunctions barrier;
-    FiniteDiffGradientFactory gradientFactory;
 
     public SumOfThreeModel(double penCoeff, double eps) {
         this.barrier = new BarrierFunctions(penCoeff, "quad");
-        this.gradientFactory = new FiniteDiffGradientFactory(getObjectiveFunction(), eps);
         this.eps=eps;
     }
 
@@ -64,11 +60,4 @@ public class SumOfThreeModel {
         return sum - SUM_MAX;
     }
 
-    public ObjectiveFunctionGradient getWrongGradient() {
-        return new ObjectiveFunctionGradient(point -> new double[]{A0, A1, A2});
-    }
-
-    public ObjectiveFunctionGradient getGradientFactory() {
-        return gradientFactory.getFiniteDiffGradient();
-    }
 }

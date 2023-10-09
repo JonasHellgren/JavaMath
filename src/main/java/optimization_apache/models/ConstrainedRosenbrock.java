@@ -3,7 +3,7 @@ package optimization_apache.models;
 import common.ListUtils;
 import optimization_apache.helpers.BarrierFunctions;
 import optimization_apache.helpers.BoundConstraints;
-import optimization_apache.helpers.FiniteDiffGradientFactory;
+import optimization_apache.helpers.FiniteDiffGradient;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
 
@@ -26,11 +26,11 @@ public class ConstrainedRosenbrock {
     }
 
     BarrierFunctions barrier;
-    FiniteDiffGradientFactory finiteDiffGradient;
+    FiniteDiffGradient finiteDiffGradient;
 
     public ConstrainedRosenbrock(double penCoeff, double eps) {
         this.barrier = new BarrierFunctions(penCoeff, "quad");
-        this.finiteDiffGradient = new FiniteDiffGradientFactory(getObjectiveFunction(), eps);
+        this.finiteDiffGradient = new FiniteDiffGradient(getObjectiveFunction(), eps);
     }
 
     public ObjectiveFunction getObjectiveFunction() {

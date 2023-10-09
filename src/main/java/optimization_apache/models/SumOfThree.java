@@ -4,7 +4,7 @@ import common.ArrayUtil;
 import common.ListUtils;
 import optimization_apache.helpers.BarrierFunctions;
 import optimization_apache.helpers.BoundConstraints;
-import optimization_apache.helpers.FiniteDiffGradientFactory;
+import optimization_apache.helpers.FiniteDiffGradient;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
 
@@ -31,11 +31,11 @@ public class SumOfThree {
     }
 
     BarrierFunctions barrier;
-    FiniteDiffGradientFactory gradientFactory;
+    FiniteDiffGradient gradientFactory;
 
     public SumOfThree(double penCoeff, double eps) {
         this.barrier = new BarrierFunctions(penCoeff, "quad");
-        this.gradientFactory = new FiniteDiffGradientFactory(getObjectiveFunction(), eps);
+        this.gradientFactory = new FiniteDiffGradient(getObjectiveFunction(), eps);
     }
 
     public ObjectiveFunction getObjectiveFunction() {

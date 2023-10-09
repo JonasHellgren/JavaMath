@@ -1,6 +1,6 @@
 package optimization_apache.models;
 
-import optimization_apache.helpers.FiniteDiffGradientFactory;
+import optimization_apache.helpers.FiniteDiffGradient;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
 
@@ -23,7 +23,7 @@ public class Bowl {
     }
 
     public ObjectiveFunctionGradient getFiniteDiffGradient(double eps) {
-        FiniteDiffGradientFactory finiteDiffGradient = new FiniteDiffGradientFactory(getObjectiveFunction(), eps);
+        FiniteDiffGradient finiteDiffGradient = new FiniteDiffGradient(getObjectiveFunction(), eps);
         return finiteDiffGradient.getFiniteDiffGradient();
     }
 

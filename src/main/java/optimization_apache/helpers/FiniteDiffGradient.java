@@ -7,13 +7,13 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient
  * https://en.wikipedia.org/wiki/Finite_difference
  */
 
-public class FiniteDiffGradientFactory {
+public class FiniteDiffGradient {
 
     public static final double ONE_DIV_TWO = 0.5;
     ObjectiveFunction objectiveFunction;
     double eps;
 
-    public FiniteDiffGradientFactory(ObjectiveFunction objectiveFunction, double eps) {
+    public FiniteDiffGradient(ObjectiveFunction objectiveFunction, double eps) {
         this.objectiveFunction = objectiveFunction;
         this.eps = eps;
     }
