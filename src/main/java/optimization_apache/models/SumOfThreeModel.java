@@ -5,7 +5,6 @@ import common.ListUtils;
 import optimization_apache.helpers.BarrierFunctions;
 import optimization_apache.helpers.BoundConstraints;
 import optimization_apache.interfaces_adapter.OptimizationModelInterface;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,6 @@ public class SumOfThreeModel implements OptimizationModelInterface {
     public double getEps() {
         return eps;
     }
-
 
     @Override
      public double getObjective(double[] point) {
