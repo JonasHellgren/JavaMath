@@ -29,7 +29,7 @@ public class TestIndexFinder {
     public void givenDoubleNumber_thenCorrectIndex() {
         Assertions.assertEquals(0,IndexFinder.findBucket(arrayDouble,0.5));
         Assertions.assertEquals(4, IndexFinder.findBucket(arrayDouble, 4.2));
-        Assertions.assertEquals(8, IndexFinder.findBucket(arrayDouble, 42));
+        Assertions.assertEquals(7, IndexFinder.findBucket(arrayDouble, 42));
         Assertions.assertEquals(-1, IndexFinder.findBucket(arrayDouble, -7));
     }
 

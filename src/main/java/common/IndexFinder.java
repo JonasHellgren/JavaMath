@@ -29,7 +29,7 @@ public class IndexFinder {
         }
 
         log.warning("Value exceeds the last bucket");
-        return array.length;
+        return array.length-1;
     }
 
 }
