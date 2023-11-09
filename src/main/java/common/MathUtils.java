@@ -1,8 +1,13 @@
 package common;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MathUtils {
 
@@ -73,6 +78,11 @@ public class MathUtils {
         return true;
     }
 
-
+    public static List<Double> accumulatedSum(List<Double> list) {
+        // Use AtomicReference to hold the running total
+        AtomicReference<Double> runningSum = new AtomicReference<>(0.0);
+        return list.stream().map(numberInList -> runningSum.updateAndGet(sum -> sum + numberInList))
+                .collect(Collectors.toList());
+    }
 
 }
