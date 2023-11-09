@@ -1,5 +1,6 @@
 package optimization_apache.helpers;
 
+import lombok.Setter;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
 
@@ -7,6 +8,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient
  * https://en.wikipedia.org/wiki/Finite_difference
  */
 
+@Setter
 public class FiniteDiffGradientCalculator {
 
     public static final double ONE_DIV_TWO = 0.5;
