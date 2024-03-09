@@ -1,0 +1,24 @@
+
+P
+java:S1118
+":Add a private constructor to hide the implicit public one.(öÏå
+L
+java:S1612"6Replace this lambda with method reference 'Math::abs'.(ÇËÙà
+Y
+java:S1155)">Use isEmpty() to check whether the collection is empty or not.(á‡Ÿüþÿÿÿÿ
+H
+java:S1135/"2Complete the task associated to this TODO comment.(äæ®Ô
+Y
+java:S11552">Use isEmpty() to check whether the collection is empty or not.(á‡Ÿüþÿÿÿÿ
+h
+java:S6204?"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(œçÖß
+h
+java:S6204E"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+h
+java:S6204S"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+h
+java:S6204Y"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+h
+java:S6204e"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+h
+java:S6204s"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹

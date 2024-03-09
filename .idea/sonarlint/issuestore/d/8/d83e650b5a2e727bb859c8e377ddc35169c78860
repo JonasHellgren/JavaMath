@@ -1,0 +1,16 @@
+
+P
+java:S1118":Add a private constructor to hide the implicit public one.(¬Ú®Ç
+@
+java:S1197M"*Move the array designators [] to the type.(ÿ‘Ó¾
+@
+java:S1197M"*Move the array designators [] to the type.(ÿ‘Ó¾
+h
+java:S6204^"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+F
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ
+R
+java:S1128
+"7Remove this unused import 'java.util.stream.IntStream'.(ÙÉ½Ÿùÿÿÿÿ
+@
+java:S1068"*Remove this unused "logger" private field.(êÊ

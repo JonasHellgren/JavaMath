@@ -15,11 +15,11 @@ import java.util.Arrays;
  */
 public class TestConstrainedRosenbrock {
     public static final double DELTA = 1.0e-1;
-    public static final int NOF_EVAL_MAX = 10_000;
-    public static final double EPS = 1e-3;
+    public static final int NOF_EVAL_MAX = 100_000;
+    public static final double EPS = 1e-10;
     public static final double PEN_COEFF = 1e1;
-    public static final double RELATIVE_THRESHOLD = EPS;
-    public static final double ABSOLUTE_THRESHOLD = EPS;
+    public static final double RELATIVE_THRESHOLD = Double.MIN_VALUE;
+    public static final double ABSOLUTE_THRESHOLD = 1e-30;
     public static final double[] OPT_POINT = {1.0, 1.0};
     public static final double[] INITIAL_GUESS = {0.5, 0.5};
 
