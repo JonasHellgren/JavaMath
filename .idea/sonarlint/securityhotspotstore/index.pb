@@ -65,3 +65,7 @@ S
 #src/main/java/common/DefaultIf.java,3\b\3b574b16f7b175727e96831f0faa62c0c240cb70
 V
 &src/main/java/common/Conditionals.java,f\b\fb0b228e42c1b0fc82d1f1942ce74eeb7d18ca72
+e
+5src/test/java/optimization_apache/TestJoptimizer.java,2\a\2a7e7620dc22c66834ce71e7ff8d17334046ca8c
+f
+6src/test/java/optimization_apache/TestBarrierJOpt.java,2\2\2238743a7f4168797597d9dc8bc1d52391878f00
