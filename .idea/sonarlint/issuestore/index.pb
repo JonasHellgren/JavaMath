@@ -55,3 +55,13 @@ v
 Fsrc/main/java/optimization_apache/depot_charging/ViolationResults.java,1\b\1b834c0c015d7f517202904383624a2758eea34f
 k
 ;src/test/java/optimization_apache/TestViolationResults.java,1\e\1e387e7fff446f58eef8a310e25bbaac455afeb8
+e
+5src/test/java/optimization_apache/TestDepotModel.java,1\a\1a744814c70d137a3f3848ca4582a835c690c856
+p
+@src/test/java/optimization_apache/TestDepotApacheOptimizers.java,5\3\531d42fb0c0a2554f24efcff78febf52f17acb9d
+h
+8src/test/java/optimization_apache/TestCircleFitting.java,d\c\dcf01f78fd4479f2c99301f7769336e6cf87b370
+S
+#src/main/java/common/DefaultIf.java,3\b\3b574b16f7b175727e96831f0faa62c0c240cb70
+V
+&src/main/java/common/Conditionals.java,f\b\fb0b228e42c1b0fc82d1f1942ce74eeb7d18ca72

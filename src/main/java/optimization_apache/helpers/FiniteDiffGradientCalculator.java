@@ -4,6 +4,8 @@ import lombok.Setter;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
 
+import java.util.Arrays;
+
 /**
  * https://en.wikipedia.org/wiki/Finite_difference
  */
@@ -37,7 +39,6 @@ public class FiniteDiffGradientCalculator {
                 double fForward = function.getObjectiveFunction().value(forwardPerturbedPoints);
                 gradient[i] = ONE_DIV_TWO*(fForward - fCenter) / eps+ ONE_DIV_TWO *(fCenter-fBackward) / eps;
             }
-
             return gradient;
         });
     }

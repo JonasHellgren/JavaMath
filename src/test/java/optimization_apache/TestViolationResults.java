@@ -16,7 +16,7 @@ public class TestViolationResults {
                 .noChargeWhenSoCIsHighViolations(List.of(0d,0d)).build();
         System.out.println("vr.asList() = " + vr.asList());
 
-        Assert.assertEquals(0,vr.barrier(1),1e-5);
+        Assert.assertEquals(0,vr.barrier(1, 1),1e-5);
     }
 
     @Test
@@ -26,7 +26,7 @@ public class TestViolationResults {
                 .slotPowerViolations(List.of(1d,1d))
                 .noChargeWhenSoCIsHighViolations(List.of(0d,0d)).build();
 
-        Assert.assertNotEquals(0,vr.barrier(1));
+        Assert.assertNotEquals(0,vr.barrier(1, 1));
     }
 
 }

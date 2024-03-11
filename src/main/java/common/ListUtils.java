@@ -44,7 +44,9 @@ public class ListUtils {
         return Optional.of(list.get(list.size()-1));
     }
 
-//todo fix warning
+
+
+    //todo fix warning
     public static <T,V> List<V> getListOfField(List<T> list, String fieldName) throws NoSuchFieldException {
 
         if (list.size()==0) {
