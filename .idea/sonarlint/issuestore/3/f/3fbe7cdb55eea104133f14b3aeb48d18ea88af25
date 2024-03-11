@@ -22,3 +22,5 @@ h
 java:S6204e"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
 h
 java:S6204s"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+u
+java:S6204Æ"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ğİŠÿÿÿÿÿ8˜Úšçâ1

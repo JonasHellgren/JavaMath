@@ -194,4 +194,8 @@ public class ListUtils {
         return list;
     }
 
+    public static List<Double> arrayPrimitiveDoublesToList(double[] arr) {
+        return DoubleStream.of(arr).boxed().collect(Collectors.toList());
+    }
+
 }

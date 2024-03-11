@@ -2,7 +2,6 @@ package optimization_apache;
 
 import optimization_apache.helpers.FiniteDiffGradientCalculator;
 import org.apache.commons.math3.analysis.MultivariateFunction;
-import org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionPenaltyAdapter;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
 import org.junit.jupiter.api.Assertions;

@@ -45,3 +45,13 @@ p
 @src/test/java/optimization_apache/TestConstrainedRosenbrock.java,4\6\46c97d9fd42b5f355258df4dd0af6fd150862358
 a
 1src/test/java/optimization_apache/TestHelper.java,1\d\1dd2c50495c6241b0666044f54cc0c6d99bb44bc
+{
+Ksrc/main/java/optimization_apache/helpers/FiniteDiffGradientCalculator.java,d\0\d044fae8f083ba2484fbd34fdf7005d6293db705
+o
+?src/main/java/optimization_apache/helpers/BarrierFunctions.java,8\5\85cc4bfbf2c1833bdf045a4714e0cd2977e7a56c
+p
+@src/main/java/optimization_apache/depot_charging/DepotModel.java,1\a\1a86fc63c63b790162923ff6015f7360a92c80b9
+v
+Fsrc/main/java/optimization_apache/depot_charging/ViolationResults.java,1\b\1b834c0c015d7f517202904383624a2758eea34f
+k
+;src/test/java/optimization_apache/TestViolationResults.java,1\e\1e387e7fff446f58eef8a310e25bbaac455afeb8
