@@ -110,4 +110,57 @@ public class TestMatrixForms {
         assertEquals( 50.,  value, 1.E-6);
     }
 
+    /**
+     * Test QP in 3-dim
+     * Min(1/2*xQx'+q'x) s.t.
+     * 	x1 <= -10
+     * This problem can't be solved without an initial point,
+     * because the relative PhaseI problem is undetermined.
+     * Submitted 01/06/2012 by Klaas De Craemer
+     */
+    @Test
+    public void testQPWithQvector() throws Exception {
+        log.info("testQP");
+
+        // Objective function
+        double[][] pMatrix = new double[][] {
+                { 1e-1, 0, 0 },
+                { 0, 1e-1, 0 },
+                { 0, 0, 1e-1}};
+        double[] qVector= new double[]{-1, -2, -3};
+        var objectiveFunction = new PDQuadraticMultivariateRealFunction(pMatrix, qVector, 0);
+
+        //inequalities
+        var inequalities = new ConvexMultivariateRealFunction[3];
+        inequalities[0] = new LinearMultivariateRealFunction(new double[]{1, 0, 0}, -10);// x1 <= 10
+        inequalities[1] = new LinearMultivariateRealFunction(new double[]{0, 1, 0}, -10);// x2 <= 10
+        inequalities[2] = new LinearMultivariateRealFunction(new double[]{0, 0, 1}, -7);// x3 <= 7
+
+
+        //optimization problem
+        var or = new OptimizationRequest();
+        or.setF0(objectiveFunction);
+        or.setInitialPoint(new double[]{1, 1, 1});
+        or.setFi(inequalities);
+//        or.setToleranceFeas(1.E-12);
+//        or.setTolerance(1.E-12);
+
+        //optimization
+        var opt = new JOptimizer();
+        opt.setOptimizationRequest(or);
+        opt.optimize();
+
+
+        var response = opt.getOptimizationResponse();
+        double[] sol = response.getSolution();
+        double value = objectiveFunction.value(new DenseDoubleMatrix1D(sol));
+        log.info("sol   : " + ArrayUtils.toString(sol));
+        log.info("value : " + value);
+        assertEquals(-10., sol[0], 1.E-6);
+        assertEquals(  0., sol[1], 1.E-6);
+        assertEquals(  0., sol[2], 1.E-6);
+        assertEquals( 50.,  value, 1.E-6);
+    }
+
+
 }

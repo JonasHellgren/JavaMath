@@ -16,85 +16,46 @@ import org.junit.Test;
 
 @Log
 public class TestJoptimizer {
-    public static final double REL_TRES_HOLD = Double.MIN_VALUE;
-    public static final double ABS_TRES_HOLD = 1e-10;
-
-    public static final double BARRIER_WEIGHT = 0*1e2;
-    public static final double TOL = 1e-4;
-    public static final int EVAL_MAX = 100_000;
-    public static final double[] INITIAL_GUESS = {0, 0, 0};
-    public static final int MAX_ITERATIONS = 100_000;
-    public static final double COST_TOL = 0.3;
-    public static final double EXPECTED_COST = -0.5 * 2 - 0.5 * 3;
-    DepotModel model;
+    public static final double Q = 1e-2;
+    ChargeDepotModel model;
     JOptimizer optimizerJo;
 
     @SneakyThrows
     @Before
     public void init() {
-        model = DepotModel.builder()
-                .kList(new double[]{1, 2, 3})
-                .pMaxList(new double[]{0.5, 0.5, 0.5})
+        model = ChargeDepotModel.builder()
+                .kList(new double[]{1, 1, 0.7})
+                .qList(new double[]{Q,Q,Q})
+                .pMaxList(new double[]{1000, 1000, 1000})
+                .pMinList(new double[]{-100, -100, -100})
                 .socList(new double[]{1, 1, 1})
-                .pDepotMax(1)
-                .barrierWeight(BARRIER_WEIGHT)
-                .barrierWeightQuad(BARRIER_WEIGHT)
+                .pDepotMax(100)
                 .socMax(1)
                 .build();
         optimizerJo = new JOptimizer();
-
-
     }
-
-    ConvexMultivariateRealFunction objectiveFunction = new ConvexMultivariateRealFunction() {
-        @Override
-        public double value(DoubleMatrix1D dm) {
-            //return model2.calculateObjectiveValue(dm.toArray());
-            return model.getObjectiveFunction().getObjectiveFunction().value(dm.toArray());
-        }
-
-        @Override
-        public DoubleMatrix1D gradient(DoubleMatrix1D dm) {
-            //return getM(model2.calculateObjectiveGradient(dm.toArray()));
-            //return null;
-            return  new DenseDoubleMatrix1D(
-                    model.getFiniteDiffGradient().getObjectiveFunctionGradient().value(dm.toArray()));
-        }
-
-        @Override
-        public DoubleMatrix2D hessian(DoubleMatrix1D doubleMatrix1D) {
-            DoubleFactory2D F2 = DoubleFactory2D.dense;
-            return F2.make(new double[][] {
-                    { 0.0, 0.0, 0.0},
-                    { 0.0, 0, 0.0 },
-                    { 0.0, 0.0, 0}});
-        }
-
-        @Override
-        public int getDim() {
-            return 3;
-        }
-    };
 
 
     @SneakyThrows
     @Test
     public void when() {
         OptimizationRequest or = new OptimizationRequest();
-        or.setF0(objectiveFunction); // Set the objective function
+        or.setF0(model.costFunction()); // Set the objective function
+        or.setFi(ArrayUtils.addAll(model.bounds(),model.powerTotal()));
         or.setInitialPoint(new double[]{0.4, 0.4,0.4}); // Optional: initial guess
-        or.setToleranceFeas(1.E-1); // Tolerance on feasibility
-        or.setTolerance(1.E-1); // Tolerance on optimization
+        or.setToleranceFeas(1.E-0); // Tolerance on feasibility
+        or.setTolerance(1e-0); // Tolerance on optimization
 
-        NewtonLEConstrainedFSP  optimizer = new NewtonLEConstrainedFSP();  //todo fix hession
+//        NewtonLEConstrainedFSP  optimizer = new NewtonLEConstrainedFSP();  //todo fix hession
 
         //var bf=new BarrierFunction();
         // var optimizer = new com.joptimizer.optimizers.BarrierMethod();
 
+        var optimizer=new JOptimizer();
         optimizer.setOptimizationRequest(or);
         optimizer.optimize();
 
-        OptimizationResponse response = optimizer.getOptimizationResponse();
+        var response = optimizer.getOptimizationResponse();
         double[] sol = response.getSolution();
         log.info("sol   : " + ArrayUtils.toString(sol));
 

@@ -91,3 +91,17 @@ _
 /src/test/java/joptimizer/TestTwoDimQpModel.java,9\d\9d2e071628c5dc50a94c84a9c0f98ed5eef694bd
 T
 $src/test/java/joptimizer/TestQP.java,4\e\4e58d7814759989f94bafeb3fcde2cd19b9225e9
+X
+(src/test/java/joptimizer/Test3DimQP.java,7\b\7b2759575bd558949db8a22c5bd23be525429f31
+X
+(src/test/java/joptimizer/Test2DimQP.java,4\7\4748c5103506425f42d20123e9a0e612881a9c13
+^
+.src/main/java/joptimizer/BoundCounstraint.java,f\6\f6efd9fceeb90d04d9ca535e043927130aaaa0f9
+b
+2src/main/java/joptimizer/UpperBoundConstraint.java,a\4\a470bb74204c19a3c0892fa6c10432566ea98da6
+^
+.src/main/java/joptimizer/ChargeDepotModel.java,6\a\6a449ad3bdf42af7b6ffd7867afdc8939636c4c9
+[
++src/main/java/joptimizer/SumConstraint.java,4\e\4e9cf5f3ac01b92fcce1a70e0d3f484b83102e87
+b
+2src/main/java/joptimizer/LowerBoundConstraint.java,5\5\557206d492beffba9e1cc794f8826c979823004c
