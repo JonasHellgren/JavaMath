@@ -5,13 +5,14 @@ import com.joptimizer.functions.PDQuadraticMultivariateRealFunction;
 import lombok.Builder;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Arrays;
 import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
 
 @Builder
 public class ChargeDepotModel {
-    public static final double POWER_SMALL = 1e-1;
+    public static final double POWER_SMALL = 1;
+
+    @Builder.Default
+    boolean isCharging=true;
     double[] kList;
     double[] qList;
     double[] pMaxList;
@@ -27,12 +28,15 @@ public class ChargeDepotModel {
         for (int i = 0; i < pMatrix.length && i < qList.length; i++) {
             pMatrix[i][i] = qList[i];
         }
-       double[] kVector= DoubleStream.of(kList).map(x -> -x).toArray();
+       double[] kVector= DoubleStream.of(kList).map(x -> isCharging?-x:x).toArray();
        return new PDQuadraticMultivariateRealFunction(pMatrix, kVector, 0);
     }
 
     public ConvexMultivariateRealFunction[] constraints() {
-        return ArrayUtils.addAll(zeroPowerHighSoc(),ArrayUtils.addAll(bounds(),powerTotal()));
+        return  isCharging
+                ? ArrayUtils.addAll(zeroPowerHighSoc(),ArrayUtils.addAll(bounds(),powerTotal()))
+                : ArrayUtils.addAll(bounds(),powerTotal());
+
     }
 
     public ConvexMultivariateRealFunction[] bounds() {
@@ -54,8 +58,10 @@ public class ChargeDepotModel {
 
     public ConvexMultivariateRealFunction[] powerTotal() {
         int nDim= pMaxList.length;
-        var inequalities = new ConvexMultivariateRealFunction[1];
-        inequalities[0]=SumConstraint.builder().nDim(nDim).ub(pDepotMax).build();
+        var inequalities = new ConvexMultivariateRealFunction[2];
+        inequalities[0]=SumConstraint.builder().isSumMaxLimited(true).nDim(nDim).limit(pDepotMax).build();
+        inequalities[1]=SumConstraint.builder().isSumMaxLimited(false).nDim(nDim).limit(pDepotMax).build();
+
         return inequalities;
     }
 

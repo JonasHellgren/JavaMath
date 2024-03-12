@@ -15,27 +15,32 @@ import java.util.Arrays;
 public class SumConstraint implements ConvexMultivariateRealFunction {
 
     @NonNull Integer nDim;
-    @NonNull Double ub;
+    @NonNull Boolean isSumMaxLimited;
+    @NonNull Double limit;
 
     @Builder.Default
-    @Getter  int nIter =0;
+    @Getter
+    int nIter = 0;
 
     @Override
     public double value(DoubleMatrix1D dm) {
         nIter++;
-        return Arrays.stream(dm.toArray()).sum()-ub;
+        return Boolean.TRUE.equals(isSumMaxLimited)
+                ? Arrays.stream(dm.toArray()).sum() - limit
+                : -Arrays.stream(dm.toArray()).sum() - limit;
     }
 
     @Override
     public DoubleMatrix1D gradient(DoubleMatrix1D dm) {
-        double[] arr= new double[nDim];
-        Arrays.fill(arr, 1);
+        double[] arr = new double[nDim];
+        double gradElem=Boolean.TRUE.equals(isSumMaxLimited)?1:-1;
+        Arrays.fill(arr, gradElem);
         return DoubleFactory1D.dense.make(arr);
     }
 
     @Override
     public DoubleMatrix2D hessian(DoubleMatrix1D dm) {
-        return  new DenseDoubleMatrix2D(new double[nDim][nDim]);
+        return new DenseDoubleMatrix2D(new double[nDim][nDim]);
     }
 
     @Override
