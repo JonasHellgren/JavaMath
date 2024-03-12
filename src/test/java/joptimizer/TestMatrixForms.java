@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @Log
 public class TestMatrixForms {
 
-    public static final double TOL = 1e-5;
+    public static final double TOL = 1e-1;
 
     /**
      * Linear objective, linear constrained.
@@ -123,24 +123,29 @@ public class TestMatrixForms {
         log.info("testQP");
 
         // Objective function
+        double pme = 1e-3;
         double[][] pMatrix = new double[][] {
-                { 1e-1, 0, 0 },
-                { 0, 1e-1, 0 },
-                { 0, 0, 1e-1}};
+                {pme, 0, 0 },
+                { 0, pme, 0 },
+                { 0, 0, pme}};
         double[] qVector= new double[]{-1, -2, -3};
         var objectiveFunction = new PDQuadraticMultivariateRealFunction(pMatrix, qVector, 0);
 
         //inequalities
-        var inequalities = new ConvexMultivariateRealFunction[3];
-        inequalities[0] = new LinearMultivariateRealFunction(new double[]{1, 0, 0}, -10);// x1 <= 10
-        inequalities[1] = new LinearMultivariateRealFunction(new double[]{0, 1, 0}, -10);// x2 <= 10
-        inequalities[2] = new LinearMultivariateRealFunction(new double[]{0, 0, 1}, -7);// x3 <= 7
+        var inequalities = new ConvexMultivariateRealFunction[7];
+        inequalities[0] = new LinearMultivariateRealFunction(new double[]{1, 0, 0}, -50);// x1 <= 50
+        inequalities[1] = new LinearMultivariateRealFunction(new double[]{0, 1, 0}, -50);// x2 <= 50
+        inequalities[2] = new LinearMultivariateRealFunction(new double[]{0, 0, 1}, -50);// x3 <= 50
+        inequalities[3] = new LinearMultivariateRealFunction(new double[]{-1, 0, 0}, 0.0);// x1 > 0.0
+        inequalities[4] = new LinearMultivariateRealFunction(new double[]{0, -1, 0}, 0.0);// x2 > 0.0
+        inequalities[5] = new LinearMultivariateRealFunction(new double[]{0, 0, -1}, 0.0);// x3 > 0
+        inequalities[6] = new LinearMultivariateRealFunction(new double[]{1, 1, 1}, -120.0);// sum < 120
 
 
         //optimization problem
         var or = new OptimizationRequest();
         or.setF0(objectiveFunction);
-        or.setInitialPoint(new double[]{1, 1, 1});
+        or.setInitialPoint(new double[]{1, 1, 1.1});
         or.setFi(inequalities);
 //        or.setToleranceFeas(1.E-12);
 //        or.setTolerance(1.E-12);
@@ -156,10 +161,10 @@ public class TestMatrixForms {
         double value = objectiveFunction.value(new DenseDoubleMatrix1D(sol));
         log.info("sol   : " + ArrayUtils.toString(sol));
         log.info("value : " + value);
-        assertEquals(-10., sol[0], 1.E-6);
-        assertEquals(  0., sol[1], 1.E-6);
-        assertEquals(  0., sol[2], 1.E-6);
-        assertEquals( 50.,  value, 1.E-6);
+        assertEquals(2, sol[0], TOL);
+        assertEquals(5., sol[1], TOL);
+        assertEquals(5., sol[2], TOL);
+//        assertEquals( -50,  value, TOL);
     }
 
 

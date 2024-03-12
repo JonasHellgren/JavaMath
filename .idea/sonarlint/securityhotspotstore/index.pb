@@ -105,3 +105,5 @@ b
 +src/main/java/joptimizer/SumConstraint.java,4\e\4e9cf5f3ac01b92fcce1a70e0d3f484b83102e87
 b
 2src/main/java/joptimizer/LowerBoundConstraint.java,5\5\557206d492beffba9e1cc794f8826c979823004c
+n
+>src/test/java/joptimizer/TestJoptimizerOnChargeDepotModel.java,3\d\3df64bc33150595cc1d552e44579c2ddea8d9598

@@ -31,7 +31,7 @@ public class LowerBoundConstraint implements ConvexMultivariateRealFunction {
     public DoubleMatrix1D gradient(DoubleMatrix1D dm) {
         double[] arr= new double[nDim];
         Arrays.fill(arr, 0);
-        arr[idxVariable] = 1;
+        arr[idxVariable] = -1;
         return DoubleFactory1D.dense.make(arr);
     }
 
