@@ -4,16 +4,21 @@ import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Mult;
 import com.joptimizer.functions.*;
 import com.joptimizer.optimizers.BarrierMethod;
+import com.joptimizer.optimizers.NewtonLEConstrainedFSP;
 import com.joptimizer.optimizers.OptimizationRequest;
 import com.joptimizer.optimizers.OptimizationResponse;
 import junit.framework.TestCase;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Arrays;
 
 public class TestBarrierJOpt extends TestCase {
 
@@ -131,5 +136,71 @@ public class TestBarrierJOpt extends TestCase {
          //   log.debug("value : " + value);
          //   assertEquals(expectedValue, value, or.getTolerance());*/
         }
+
+    /**
+     * Minimize 100(2x+y) - Log[x] - Log[y],
+     * s.t. x+y=1
+     * N.B.: this simulate a centering step of the barrier method
+     * applied to the problem:
+     * Minimize 2x + y
+     * s.t. -x<0,
+     *      -y<0
+     *      x+y=1
+     * when t=100;
+     */
+    public void testOptimize3() throws Exception {
+        log.debug("testOptimize3");
+
+        // Objective function (linear)
+        ConvexMultivariateRealFunction objectiveFunction = new ConvexMultivariateRealFunction() {
+
+            @Override
+            public double value(DoubleMatrix1D X) {
+                double x = X.toArray()[0];
+                double y = X.toArray()[1];
+                return 100 * (2*x + y) - Math.log(x)- Math.log(y);
+            }
+
+            @Override
+            public DoubleMatrix1D gradient(DoubleMatrix1D X) {
+                double x = X.toArray()[0];
+                double y = X.toArray()[1];
+                return new DenseDoubleMatrix1D(new double[]{200-1./x, 100-1./y});
+            }
+
+            @Override
+            public DoubleMatrix2D hessian(DoubleMatrix1D X) {
+                double x = X.toArray()[0];
+                double y = X.toArray()[1];
+                return new DenseDoubleMatrix2D(new double[][]{{1./Math.pow(x,2), 0},{0,1./Math.pow(y,2)}});
+            }
+
+            @Override
+            public int getDim() {
+                return 2;
+            }
+        };
+
+        OptimizationRequest or = new OptimizationRequest();
+        or.setF0(objectiveFunction);
+        or.setInitialPoint(new double[] {0.0900980486377967, 0.9099019513622053});
+        or.setA(new double[][] { { 1, 1} });
+        or.setB(new double[] { 1 });
+
+        // optimization
+        NewtonLEConstrainedFSP opt = new NewtonLEConstrainedFSP(true);
+        opt.setOptimizationRequest(or);
+        opt.optimize();
+
+        OptimizationResponse response = opt.getOptimizationResponse();
+        double[] sol = response.getSolution();
+        double value = objectiveFunction.value(new DenseDoubleMatrix1D(sol));
+        log.debug("sol   : " + ArrayUtils.toString(sol));
+        log.debug("value : " + value);
+        assertEquals(0., sol[0], 0.01);
+        assertEquals(1., sol[1], 0.01);
+        assertEquals(1., sol[0]+sol[1],   0.000000000001);//check constraint
+    }
+
 
 }
