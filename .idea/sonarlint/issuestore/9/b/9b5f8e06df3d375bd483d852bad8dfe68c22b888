@@ -1,0 +1,8 @@
+
+Z
+java:S1854X"8Remove this useless assignment to local variable "blue".(Ç²ÄËþÿÿÿÿ8ÊˆÆ¹ì1
+K
+java:S1481X")Remove this unused "blue" local variable.(Ç²ÄËþÿÿÿÿ8ÊˆÆ¹ì1
+X	java:S125\"<This block of commented-out lines of code should be removed.(©à–ž8ËˆÆ¹ì1
+f
+java:S3252c"IUse static access with "javax.swing.WindowConstants" for "EXIT_ON_CLOSE".(¢¡´8ÌˆÆ¹ì1
