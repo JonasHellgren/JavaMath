@@ -84,11 +84,6 @@ public class TestJoptimizerOnChargeDepotModel {
     }
 
 
-    @NotNull
-    private static DenseDoubleMatrix1D getM(double[] x) {
-        return new DenseDoubleMatrix1D(x);
-    }
-
 
 }
 

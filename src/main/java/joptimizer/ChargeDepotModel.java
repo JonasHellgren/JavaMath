@@ -21,7 +21,6 @@ public class ChargeDepotModel {
     double pDepotMax;
     double socMax;
 
-
     public ConvexMultivariateRealFunction costFunction() {
 
         double[][] pMatrix = new double[kList.length][kList.length];
