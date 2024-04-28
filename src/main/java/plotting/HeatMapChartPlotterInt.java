@@ -58,7 +58,6 @@ public class HeatMapChartPlotterInt {
                 chart.addAnnotation(annotation); // Hypothetical method to add text
             }
         }
-
     }
 
 

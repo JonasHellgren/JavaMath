@@ -1,10 +1,0 @@
-
-^
-java:S1192"HDefine a constant instead of duplicating this literal "SoC (%)" 4 times.(¸ £›
-?
-java:S1659
-"$Declare "HEIGHT" on a separate line.(Œ¼ê©úÿÿÿÿ
-2
-java:S2386"Make this member "protected".(°ƒäE
-‡
-java:S1130"lRemove the declaration of thrown exception 'java.lang.Exception', as it cannot be thrown from method's body.(ÙØ¤Þýÿÿÿÿ
