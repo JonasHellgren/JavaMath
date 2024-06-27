@@ -4,7 +4,6 @@ import apache_common.clusterer.KMeansClusterer;
 import apache_common.clusterer.PointInCluster;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.math3.ml.clustering.CentroidCluster;
-import org.jetbrains.annotations.NotNull;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
@@ -12,7 +11,6 @@ import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -26,6 +24,8 @@ public class ClusterWithScatterPlot {
     public static final int N_CLUSTERS = 4;
     public static final int WIDTH = 500;
     public static final int HEIGHT = 200;
+    public static final int INDEX_X = 0;
+    public static final int INDEX_Y = 1;
 
     public static void main(String[] args) {
         var clusterer = KMeansClusterer.of(N_DIM, N_CLUSTERS);
@@ -38,19 +38,21 @@ public class ClusterWithScatterPlot {
 
     private static void fillChartWithData(List<CentroidCluster<PointInCluster>> clusters, XYChart chart) {
         Random random = new Random();
-        for (int i = 0; i < clusters.size(); i++) {
-            List<Double> xData = new ArrayList<>();
-            List<Double> yData = new ArrayList<>();
-            for (PointInCluster point : clusters.get(i).getPoints()) {
-                xData.add(point.getPoint()[0]);
-                yData.add(point.getPoint()[1]);
-            }
+        for (int i = INDEX_X; i < clusters.size(); i++) {
+            var xData = getDataFromCluster(clusters.get(i), INDEX_X);
+            var yData = getDataFromCluster(clusters.get(i), INDEX_Y);
             var series = chart.addSeries("cluster" + i, xData, yData);
             series.setMarkerColor(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
         }
     }
 
-    private static void addPoints(KMeansClusterer clusterer) {
+    static List<Double> getDataFromCluster(CentroidCluster<PointInCluster> cluster, int index) {
+        return cluster.getPoints().stream()
+                .map(point -> point.getPoint()[index])
+                .toList();
+    }
+
+    static void addPoints(KMeansClusterer clusterer) {
         IntStream.range(0, N_POINTS)
                 .mapToObj(i -> new double[]{
                         RandomUtils.nextDouble(0, MAX_X),
@@ -58,8 +60,7 @@ public class ClusterWithScatterPlot {
                 .forEach(clusterer::addPoint);
     }
 
-    @NotNull
-    private static XYChart createChart() {
+    static XYChart createChart() {
         XYChart chart = new XYChartBuilder()
                 .width(WIDTH).height(HEIGHT)
                 .title("Scatter Plot with Different Colors").xAxisTitle("X").yAxisTitle("Y")
