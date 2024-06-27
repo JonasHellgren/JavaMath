@@ -5,10 +5,13 @@ import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
 import com.google.common.primitives.Ints;
 
-public class GuavaTester {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GuavaRange {
 
     public static void main(String args[]) {
-        GuavaTester tester = new GuavaTester();
+        GuavaRange tester = new GuavaRange();
         tester.testRange();
     }
 
@@ -63,6 +66,15 @@ public class GuavaTester {
 
         //span
         printRange(range1.span(range8));
+
+        List<Double> rangeList = new ArrayList<>();
+        for (double i = 0.0; i <= 1.0; i += 0.1) {
+            rangeList.add(Math.round(i * 10) / 10.0); // Round to one decimal place to avoid floating-point precision issues
+        }
+
+        // Print the list
+        System.out.println(rangeList);
+
     }
 
     private void printRange(Range<Integer> range) {

@@ -1,0 +1,493 @@
+<relevant_code>
+
+
+
+<file file_path=/src/test/java/joptimizer/TestSquaredBracketsModel.java>
+
+import com.joptimizer.optimizers.OptimizationRequest;
+import com.joptimizer.optimizers.OptimizationResponse;
+import lombok.SneakyThrows;
+import lombok.extern.java.Log;
+import org.apache.commons.lang3.ArrayUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+@Log
+class TestSquaredBracketsModel {
+
+    SquaredBracketsModel model;
+    ConvexMultivariateRealFunction objectiveFunction;
+
+    @BeforeEach
+    void init() {
+        model=new SquaredBracketsModel();
+
+        objectiveFunction = new ConvexMultivariateRealFunction() {
+            @Override
+            public double value(DoubleMatrix1D dm) {
+                return model.calculateObjectiveValue(dm.toArray());
+            }
+
+            @Override
+            public DoubleMatrix1D gradient(DoubleMatrix1D dm) {
+                return  new DenseDoubleMatrix1D(model.calculateObjectiveGradient(dm.toArray()));
+            }
+
+            @Override
+            public DoubleMatrix2D hessian(DoubleMatrix1D doubleMatrix1D) {
+                DoubleFactory2D F2 = DoubleFactory2D.dense;
+                return F2.make(new double[][] {
+                        { 0.0, 0.0},
+                        { 0.0, 0}});
+            }
+
+            @Override
+            public int getDim() {
+                return 2;        }
+        };
+
+    }
+
+
+    @SneakyThrows
+    @Test
+    void when() {
+        OptimizationRequest or = new OptimizationRequest();
+        or.setF0(objectiveFunction); // Set the objective function
+        or.setInitialPoint(new double[]{0.4, 0.4,0.4}); // Optional: initial guess
+        or.setToleranceFeas(1.E-1); // Tolerance on feasibility
+</file>
+
+
+
+<file file_path=/src/main/java/common/ListUtils.java>
+
+    public static List<Double> createListWithZeroElements(int len) {
+        return createListWithEqualElementValues(len,0);
+    }
+
+    public static List<Double> createListWithEqualElementValues(int len, double value) {
+        return new ArrayList<>(Collections.nCopies(len,value));
+    }
+
+    public static List<Double> generateSequenceDoubleStream(double start, double end, double step) {
+        return DoubleStream.iterate(start, d -> d <= end, d -> d + step)
+                .boxed()
+                .collect(Collectors.toList());
+    }
+
+    public static double[] toArray(List<Double> list) {
+        return list.stream().mapToDouble(Number::doubleValue).toArray();
+    }
+
+    /**
+     *  list = [10 10 10], df=0.5 => listDf=[1*df^0 1*df^1 1*df^2] => dotProduct(list,listDf)=10+5+2.5
+     */
+    public static double discountedSum(List<Double> list, double discountFactor) {
+        List<Double> listDf = getDiscountList(list.size(), discountFactor);
+        return dotProduct(list,listDf);
+    }
+
+    /**
+     * 1d,10d,10d , df=0.5->  10d,5d,2.5d
+     */
+
+    public static List<Double> discountedElements(List<Double> list, double discountFactor) {
+        List<Double> listDf = getDiscountList(list.size(), discountFactor);
+        return elementProduct(list,listDf);
+    }
+
+    /**
+     * 1d,10d,10d , df=0.5->  0.25d,5d,10d
+     */
+
+    public static List<Double> discountedElementsReverse(List<Double> list, double discountFactor) {
+        List<Double> listDf = getDiscountList(list.size(), discountFactor);
+        Collections.reverse(listDf);
+</file>
+
+
+
+<file file_path=/src/main/java/plotting/BarChartOverlapped.java>
+package plotting;
+
+import org.knowm.xchart.CategoryChart;
+import org.knowm.xchart.CategoryChartBuilder;
+import org.knowm.xchart.Histogram;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.style.Styler;
+
+public class BarChartOverlapped {
+
+    public static void main(String[] args) {
+
+        CategoryChart chart = new CategoryChartBuilder()
+                .width(800).height(600).title("Score Histogram").xAxisTitle("Score").yAxisTitle("Number").build();
+        // Customize Chart
+        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
+        chart.getStyler().setAvailableSpaceFill(.96);
+        chart.getStyler().setOverlapped(true);
+
+        // Series
+        Histogram histogram1 = new Histogram(DataGenerator.getGaussianData(10000), 20, -20, 20);
+        Histogram histogram2 = new Histogram(DataGenerator.getGaussianData(5000), 20, -20, 20);
+
+        chart.addSeries("histogram 1", histogram1.getxAxisData(), histogram1.getyAxisData());
+        chart.addSeries("histogram 2", histogram2.getxAxisData(), histogram2.getyAxisData());
+
+
+        new SwingWrapper<>(chart).displayChart();
+    }
+}
+
+</file>
+
+
+
+<file file_path=/src/main/java/optimization_apache/depot_charging/DepotModel.java>
+package optimization_apache.depot_charging;
+
+import com.google.common.base.Preconditions;
+import common.Conditionals;
+import common.DefaultIf;
+import common.ListUtils;
+import common.MathUtils;
+import lombok.Builder;
+import lombok.Setter;
+import optimization_apache.helpers.FiniteDiffGradientCalculator;
+import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
+import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
+import static common.Conditionals.executeOneOfTwo;
+import static common.ListUtils.arrayPrimitiveDoublesToList;
+import static common.MathUtils.normalize;
+
+public class DepotModel {
+
+    public static final double EPS = 1e-5;
+    public static final double BARRIER_WEIGHT = 1e-1;
+    public static final double SMALL_POWER = 1e-2;
+    public static final double POWER_MIN = 1e-2;
+    double[] kList;
+    double[] pMaxList;
+    double[] socList;
+    double pDepotMax;
+    double socMax;
+    @Setter double barrierWeightLin;
+    @Setter double barrierWeightQuad;
+
+    final FiniteDiffGradientCalculator finiteDiffGradient;
+
+    @Builder
+    public DepotModel(double[] kList, double[] pMaxList, double[] socList, double pDepotMax, double socMax,
+                      Double barrierWeight, Double barrierWeightQuad) {
+        Preconditions.checkArgument(kList.length==pMaxList.length && kList.length==socList.length, "Non equal inputs");
+
+        this.kList = kList;
+        this.pMaxList = pMaxList;
+        this.socList = socList;
+        this.pDepotMax = pDepotMax;
+        this.socMax = socMax;
+        this.barrierWeightLin = DefaultIf.defaultIfNullDouble.apply(barrierWeight,BARRIER_WEIGHT);
+        this.barrierWeightQuad= DefaultIf.defaultIfNullDouble.apply(barrierWeightQuad,BARRIER_WEIGHT);
+        this.finiteDiffGradient=new FiniteDiffGrad
+</file>
+
+
+
+<file file_path=/src/main/java/plotting/LinesInSameChart.java>
+package plotting;
+
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.XYSeries;
+import org.knowm.xchart.style.XYStyler;
+import org.knowm.xchart.style.markers.SeriesMarkers;
+
+public class LinesInSameChart {
+
+    public static void main(String[] args) {
+        int nofLines = 4;
+        XYChart chart = new XYChartBuilder().xAxisTitle("X").yAxisTitle("Y").width(600).height(400).build();
+        XYStyler styler = chart.getStyler();
+        styler.setYAxisMin(-10d);
+        styler.setYAxisMax(10d);
+        styler.setPlotGridLinesVisible(true);
+
+        for (int i = 0; i < nofLines; i++) {
+            XYSeries series = chart.addSeries("" + i, null, DataGenerator.getRandomWalk(200));
+            series.setMarker(SeriesMarkers.NONE);
+        }
+        var sw= new SwingWrapper<>(chart).displayChart();
+    }
+
+
+}
+
+</file>
+
+
+
+<file file_path=/src/main/java/plotting/LinesInSubPlots.java>
+package plotting;
+
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.XYSeries;
+import org.knowm.xchart.style.markers.SeriesMarkers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LinesInSubPlots {
+
+    public static void main(String[] args) {
+        int numCharts = 4;
+        List<XYChart> charts = new ArrayList<>();
+
+        for (int i = 0; i < numCharts; i++) {
+            XYChart chart = new XYChartBuilder().xAxisTitle("X").yAxisTitle("Y").width(600).height(400).build();
+            chart.getStyler().setYAxisMin(-10d);
+            chart.getStyler().setYAxisMax(10d);
+            XYSeries series = chart.addSeries("" + i, null, DataGenerator.getRandomWalk(200));
+            series.setMarker(SeriesMarkers.NONE);
+            charts.add(chart);
+        }
+        new SwingWrapper<>(charts).displayChartMatrix();
+    }
+
+}
+
+</file>
+
+
+
+<file file_path=/src/main/java/plotting/ScatterChart.java>
+
+import common.RandUtils;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.XYSeries;
+import org.knowm.xchart.style.Styler;
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class ScatterChart {
+
+    public static void main(String[] args) {
+
+        XYChart chart = getChart();
+        new SwingWrapper<>(chart).displayChart();
+    }
+
+    public static XYChart getChart() {
+
+        // Create Chart
+        XYChart chart = new XYChartBuilder().width(400).height(300).build();
+
+        // Customize Chart
+        chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Scatter);
+        chart.getStyler().setChartTitleVisible(false);
+        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideSW);
+        chart.getStyler().setMarkerSize(5);
+
+        // Series
+        List<Double> xData = new LinkedList<>();
+        List<Double> yData = new LinkedList<>();
+        int size = 100;
+        for (int i = 0; i < size; i++) {
+            xData.add(RandUtils.getRandomDouble(-10,10));
+            yData.add(RandUtils.getRandomDouble(-10,10));
+
+        }
+        chart.addSeries("Scatter", xData, yData);
+
+        return chart;
+    }
+
+
+}
+
+</file>
+
+
+
+<file file_path=/src/test/java/apache_common/StatisticsTest.java>
+
+import org.apache.commons.math3.stat.regression.SimpleRegression;
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
+/**
+ * https://commons.apache.org/proper/commons-math/userguide/stat.html
+ */
+
+public class StatisticsTest {
+
+
+    public static final double DELTA = 0.01;
+    public static final List<Double> VALUES = List.of(1d, 2d, 3d, 4d);
+
+    @Test
+    public void whenRegression_thenCorrect() {
+        double[][] data = { { 1, 3 }, {2, 5 }, {3, 7 }, {4, 14 }, {5, 11 }};
+        SimpleRegression regression = new SimpleRegression();
+        regression.addData(data);
+        System.out.println("regression.getSlope() = " + regression.getSlope());
+        assertEquals(2.5,regression.getSlope(), DELTA);
+    }
+
+    /**
+     * DescriptiveStatistics maintains the input data in memory and has the capability of producing "rolling" statistics computed from a "window" consisting of the most recently added values.
+     *
+     * SummaryStatistics does not store the input data values in memory, so the statistics included in this aggregate are limited to those that can be computed in one pass through the data without access to the full array of values.
+     */
+
+    @Test
+    public void whenDescriptiveStatistics_thenCorrect() {
+        DescriptiveStatistics ds=new DescriptiveStatistics();
+        addValues(ds, VALUES);
+
+        System.out.println("ds.getMean() = " + ds.getMean());
+        System.out.println("ds.getStandardDeviation() = " + ds.getStandardDeviation());
+</file>
+
+
+
+<file file_path=/src/test/java/optimization_apache/TestDepotApacheOptimizers.java>
+
+    public static final double COST_TOL = 0.3;
+    public static final double EXPECTED_COST = -0.5 * 2 - 0.5 * 3;
+    DepotModel model;
+    CMAESOptimizer optimizerCm;
+    MultivariateOptimizer optimizerMv;
+    SimplexOptimizer optimizerSm;
+
+    @Before
+    public void init() {
+        model= DepotModel.builder()
+                .kList(new double[]{1,2,3})
+                .pMaxList(new double[]{0.5,0.5,0.5})
+                .socList(new double[]{1,1,1})
+                .pDepotMax(1)
+                .barrierWeight(BARRIER_WEIGHT)
+                .barrierWeightQuad(BARRIER_WEIGHT)
+                .socMax(1)
+                .build();
+
+        optimizerMv=new NonLinearConjugateGradientOptimizer(
+                NonLinearConjugateGradientOptimizer.Formula.POLAK_RIBIERE,
+                new SimpleValueChecker(REL_TRES_HOLD,ABS_TRES_HOLD));
+
+        optimizerCm=new CMAESOptimizer(
+                MAX_ITERATIONS, // Max iterations
+                1e-6, // Stop fitness (tolerance for considering a solution good enough)
+                true, // Whether to generate diagnostics
+                1, // Check period
+                1, // Random seed for reproducibility, use any integer for deterministic results
+                new JDKRandomGenerator(),
+                false,
+                new SimpleValueChecker(REL_TRES_HOLD,ABS_TRES_HOLD)
+        );
+
+        optimi
+</file>
+
+
+
+<file file_path=/src/main/java/plotting/HeatMapChartPlotterInt.java>
+
+import org.jetbrains.annotations.NotNull;
+import org.knowm.xchart.AnnotationText;
+import org.knowm.xchart.HeatMapChart;
+import org.knowm.xchart.HeatMapChartBuilder;
+
+import org.knowm.xchart.SwingWrapper;
+import java.awt.*;
+import java.util.stream.IntStream;
+
+public class HeatMapChartPlotterInt {
+
+    public static void main(String[] args) {
+        int[][] data = getData();
+        int[][] dataRot=transposeMatrix(data);
+        HeatMapChart chart = createChart();
+        addData(chart, dataRot);
+        addCellText(chart, data);
+        new SwingWrapper<>(chart).displayChart();
+    }
+
+    private static int[][] getData() {
+        return new int[][]{
+                {0, 1, 50, 100,10},  //(0,0), (1,0),...
+                {2, 3, 5, 3,10},
+                {2, 4, 3, 2,10},
+                {30, 2, 4, 3,10}   //x(0,3), x(1,3),...
+        };
+    }
+
+    @NotNull
+    private static org.knowm.xchart.HeatMapChart createChart() {
+        var chart = new HeatMapChartBuilder()
+                .title("Sample HeatMap")
+                .xAxisTitle("X Axis")
+                .yAxisTitle("Y Axis")
+                .width(300).height(300)
+</file>
+
+
+
+<file file_path=/src/main/java/plotting/DataGenerator.java>
+package plotting;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class DataGenerator {
+
+    /**
+     * Generates a set of random walk data
+     *
+     * @param numPoints
+     * @return
+     */
+    public static double[] getRandomWalk(int numPoints) {
+
+        double[] y = new double[numPoints];
+        y[0] = 0;
+        for (int i = 1; i < y.length; i++) {
+            y[i] = y[i - 1] + Math.random() - .5;
+        }
+        return y;
+    }
+
+    public static List<Double> getGaussianData(int count) {
+
+        List<Double> data = new ArrayList<>(count);
+        Random r = new Random();
+        for (int i = 0; i < count; i++) {
+            data.add(r.nextGaussian() * 10);
+        }
+        return data;
+    }
+
+}
+
+</file>
+
+
+
+</relevant_code>
