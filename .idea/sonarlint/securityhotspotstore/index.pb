@@ -133,3 +133,15 @@ W
 'src/main/java/plotting/StairsChart.java,6\8\686b16f9d763c2d2be80ad829279d86e2aad236a
 e
 5src/main/java/plotting/domain/StairDataGenerator.java,c\4\c45d56d64248d9daaa2376e591df54788f384ee7
+a
+1src/test/java/apache_common/KMeansClustering.java,5\b\5b5bbbe2996040db2f9ced35b2db1ae75ae04ba6
+i
+9src/main/java/apache_common/clusterer/PointInCluster.java,5\7\57d2dddac7b5c3b531abbc4053a29fc2c8744b2c
+d
+4src/main/java/apache_common/clusterer/Clusterer.java,9\9\99a59c0216987bb987d37e84937d0a6b04a9949b
+`
+0src/test/java/apache_common/RunnerClusterer.java,2\f\2fb8fd4871e7aa6a9e7618a38a886dfcb149bc14
+j
+:src/main/java/apache_common/clusterer/KMeansClusterer.java,8\a\8ad9f9cfefa969d96a8e401250fc91c26cb417da
+b
+2src/main/java/plotting/ClusterWithScatterPlot.java,1\d\1d9881d6fe415686053c3beca5aa8e29db021d45

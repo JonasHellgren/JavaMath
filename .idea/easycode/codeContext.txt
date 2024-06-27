@@ -2,274 +2,60 @@
 
 
 
-<file file_path=/src/test/java/joptimizer/TestSquaredBracketsModel.java>
+<file file_path=/src/main/java/apache_common/info.md>
 
-import com.joptimizer.optimizers.OptimizationRequest;
-import com.joptimizer.optimizers.OptimizationResponse;
-import lombok.SneakyThrows;
-import lombok.extern.java.Log;
-import org.apache.commons.lang3.ArrayUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-@Log
-class TestSquaredBracketsModel {
-
-    SquaredBracketsModel model;
-    ConvexMultivariateRealFunction objectiveFunction;
-
-    @BeforeEach
-    void init() {
-        model=new SquaredBracketsModel();
-
-        objectiveFunction = new ConvexMultivariateRealFunction() {
-            @Override
-            public double value(DoubleMatrix1D dm) {
-                return model.calculateObjectiveValue(dm.toArray());
-            }
-
-            @Override
-            public DoubleMatrix1D gradient(DoubleMatrix1D dm) {
-                return  new DenseDoubleMatrix1D(model.calculateObjectiveGradient(dm.toArray()));
-            }
-
-            @Override
-            public DoubleMatrix2D hessian(DoubleMatrix1D doubleMatrix1D) {
-                DoubleFactory2D F2 = DoubleFactory2D.dense;
-                return F2.make(new double[][] {
-                        { 0.0, 0.0},
-                        { 0.0, 0}});
-            }
-
-            @Override
-            public int getDim() {
-                return 2;        }
-        };
-
-    }
+org.apache.commons.math4.distribution - probability distributions
+org.apache.commons.math4.fraction - rational numbers
+org.apache.commons.math4.transform - transform methods (Fast Fourier)
+org.apache.commons.math4.geometry - geometry (Euclidean spaces and Binary Space Partitioning)
+org.apache.commons.math4.optim - function maximization or minimization
+org.apache.commons.math4.ode - Ordinary Differential Equations integration
+org.apache.commons.math4.genetics - Genetic Algorithms
+org.apache.commons.math4.fitting - Curve Fitting
+org.apache.commons.math4.ml - Machine Learning
 
 
-    @SneakyThrows
-    @Test
-    void when() {
-        OptimizationRequest or = new OptimizationRequest();
-        or.setF0(objectiveFunction); // Set the objective function
-        or.setInitialPoint(new double[]{0.4, 0.4,0.4}); // Optional: initial guess
-        or.setToleranceFeas(1.E-1); // Tolerance on feasibility
 </file>
 
 
 
-<file file_path=/src/main/java/common/ListUtils.java>
-
-    public static List<Double> createListWithZeroElements(int len) {
-        return createListWithEqualElementValues(len,0);
-    }
-
-    public static List<Double> createListWithEqualElementValues(int len, double value) {
-        return new ArrayList<>(Collections.nCopies(len,value));
-    }
-
-    public static List<Double> generateSequenceDoubleStream(double start, double end, double step) {
-        return DoubleStream.iterate(start, d -> d <= end, d -> d + step)
-                .boxed()
-                .collect(Collectors.toList());
-    }
-
-    public static double[] toArray(List<Double> list) {
-        return list.stream().mapToDouble(Number::doubleValue).toArray();
-    }
-
-    /**
-     *  list = [10 10 10], df=0.5 => listDf=[1*df^0 1*df^1 1*df^2] => dotProduct(list,listDf)=10+5+2.5
-     */
-    public static double discountedSum(List<Double> list, double discountFactor) {
-        List<Double> listDf = getDiscountList(list.size(), discountFactor);
-        return dotProduct(list,listDf);
-    }
-
-    /**
-     * 1d,10d,10d , df=0.5->  10d,5d,2.5d
-     */
-
-    public static List<Double> discountedElements(List<Double> list, double discountFactor) {
-        List<Double> listDf = getDiscountList(list.size(), discountFactor);
-        return elementProduct(list,listDf);
-    }
-
-    /**
-     * 1d,10d,10d , df=0.5->  0.25d,5d,10d
-     */
-
-    public static List<Double> discountedElementsReverse(List<Double> list, double discountFactor) {
-        List<Double> listDf = getDiscountList(list.size(), discountFactor);
-        Collections.reverse(listDf);
-</file>
-
-
-
-<file file_path=/src/main/java/plotting/BarChartOverlapped.java>
+<file file_path=/src/main/java/plotting/HeatMapChartPlotterDouble.java>
 package plotting;
 
-import org.knowm.xchart.CategoryChart;
-import org.knowm.xchart.CategoryChartBuilder;
-import org.knowm.xchart.Histogram;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.style.Styler;
 
-public class BarChartOverlapped {
+    public class HeatMapChartPlotterDouble {
 
-    public static void main(String[] args) {
-
-        CategoryChart chart = new CategoryChartBuilder()
-                .width(800).height(600).title("Score Histogram").xAxisTitle("Score").yAxisTitle("Number").build();
-        // Customize Chart
-        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
-        chart.getStyler().setAvailableSpaceFill(.96);
-        chart.getStyler().setOverlapped(true);
-
-        // Series
-        Histogram histogram1 = new Histogram(DataGenerator.getGaussianData(10000), 20, -20, 20);
-        Histogram histogram2 = new Histogram(DataGenerator.getGaussianData(5000), 20, -20, 20);
-
-        chart.addSeries("histogram 1", histogram1.getxAxisData(), histogram1.getyAxisData());
-        chart.addSeries("histogram 2", histogram2.getxAxisData(), histogram2.getyAxisData());
+        public static void main(String[] args) {
+            double[][] data = {
+                    {1.0, 2.0, 3.0},
+                    {2.0, 3.0, 4.0},
+                    {5.0, 4.0, 5.0}
+            };
 
 
-        new SwingWrapper<>(chart).displayChart();
-    }
-}
+            var shower=SwingShowHeatMap.builder()
+                 //   .xLabels(new String[]{"X1", "X2", "X3"})
+              //      .yLabels(new String[]{"Y1", "Y2", "Y3"})
+                    .isLabels(false)
+                    .build();
 
-</file>
-
-
-
-<file file_path=/src/main/java/optimization_apache/depot_charging/DepotModel.java>
-package optimization_apache.depot_charging;
-
-import com.google.common.base.Preconditions;
-import common.Conditionals;
-import common.DefaultIf;
-import common.ListUtils;
-import common.MathUtils;
-import lombok.Builder;
-import lombok.Setter;
-import optimization_apache.helpers.FiniteDiffGradientCalculator;
-import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
-import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import static common.Conditionals.executeOneOfTwo;
-import static common.ListUtils.arrayPrimitiveDoublesToList;
-import static common.MathUtils.normalize;
-
-public class DepotModel {
-
-    public static final double EPS = 1e-5;
-    public static final double BARRIER_WEIGHT = 1e-1;
-    public static final double SMALL_POWER = 1e-2;
-    public static final double POWER_MIN = 1e-2;
-    double[] kList;
-    double[] pMaxList;
-    double[] socList;
-    double pDepotMax;
-    double socMax;
-    @Setter double barrierWeightLin;
-    @Setter double barrierWeightQuad;
-
-    final FiniteDiffGradientCalculator finiteDiffGradient;
-
-    @Builder
-    public DepotModel(double[] kList, double[] pMaxList, double[] socList, double pDepotMax, double socMax,
-                      Double barrierWeight, Double barrierWeightQuad) {
-        Preconditions.checkArgument(kList.length==pMaxList.length && kList.length==socList.length, "Non equal inputs");
-
-        this.kList = kList;
-        this.pMaxList = pMaxList;
-        this.socList = socList;
-        this.pDepotMax = pDepotMax;
-        this.socMax = socMax;
-        this.barrierWeightLin = DefaultIf.defaultIfNullDouble.apply(barrierWeight,BARRIER_WEIGHT);
-        this.barrierWeightQuad= DefaultIf.defaultIfNullDouble.apply(barrierWeightQuad,BARRIER_WEIGHT);
-        this.finiteDiffGradient=new FiniteDiffGrad
-</file>
-
-
-
-<file file_path=/src/main/java/plotting/LinesInSameChart.java>
-package plotting;
-
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries;
-import org.knowm.xchart.style.XYStyler;
-import org.knowm.xchart.style.markers.SeriesMarkers;
-
-public class LinesInSameChart {
-
-    public static void main(String[] args) {
-        int nofLines = 4;
-        XYChart chart = new XYChartBuilder().xAxisTitle("X").yAxisTitle("Y").width(600).height(400).build();
-        XYStyler styler = chart.getStyler();
-        styler.setYAxisMin(-10d);
-        styler.setYAxisMax(10d);
-        styler.setPlotGridLinesVisible(true);
-
-        for (int i = 0; i < nofLines; i++) {
-            XYSeries series = chart.addSeries("" + i, null, DataGenerator.getRandomWalk(200));
-            series.setMarker(SeriesMarkers.NONE);
+            shower.showMap(data,"map");
         }
-        var sw= new SwingWrapper<>(chart).displayChart();
+
+
+
     }
 
 
-}
-
-</file>
 
 
-
-<file file_path=/src/main/java/plotting/LinesInSubPlots.java>
-package plotting;
-
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries;
-import org.knowm.xchart.style.markers.SeriesMarkers;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class LinesInSubPlots {
-
-    public static void main(String[] args) {
-        int numCharts = 4;
-        List<XYChart> charts = new ArrayList<>();
-
-        for (int i = 0; i < numCharts; i++) {
-            XYChart chart = new XYChartBuilder().xAxisTitle("X").yAxisTitle("Y").width(600).height(400).build();
-            chart.getStyler().setYAxisMin(-10d);
-            chart.getStyler().setYAxisMax(10d);
-            XYSeries series = chart.addSeries("" + i, null, DataGenerator.getRandomWalk(200));
-            series.setMarker(SeriesMarkers.NONE);
-            charts.add(chart);
-        }
-        new SwingWrapper<>(charts).displayChartMatrix();
-    }
-
-}
 
 </file>
 
 
 
 <file file_path=/src/main/java/plotting/ScatterChart.java>
+package plotting;
 
 import common.RandUtils;
 import org.knowm.xchart.SwingWrapper;
@@ -321,88 +107,81 @@ public class ScatterChart {
 
 
 
-<file file_path=/src/test/java/apache_common/StatisticsTest.java>
-
-import org.apache.commons.math3.stat.regression.SimpleRegression;
-import org.junit.Test;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
-/**
- * https://commons.apache.org/proper/commons-math/userguide/stat.html
- */
-
-public class StatisticsTest {
-
-
-    public static final double DELTA = 0.01;
-    public static final List<Double> VALUES = List.of(1d, 2d, 3d, 4d);
-
-    @Test
-    public void whenRegression_thenCorrect() {
-        double[][] data = { { 1, 3 }, {2, 5 }, {3, 7 }, {4, 14 }, {5, 11 }};
-        SimpleRegression regression = new SimpleRegression();
-        regression.addData(data);
-        System.out.println("regression.getSlope() = " + regression.getSlope());
-        assertEquals(2.5,regression.getSlope(), DELTA);
+<file file_path=/src/main/java/plotting/SwingShowHeatMap.java>
+.dispose();
+        return image;
     }
 
-    /**
-     * DescriptiveStatistics maintains the input data in memory and has the capability of producing "rolling" statistics computed from a "window" consisting of the most recently added values.
-     *
-     * SummaryStatistics does not store the input data values in memory, so the statistics included in this aggregate are limited to those that can be computed in one pass through the data without access to the full array of values.
-     */
+    private void drawMap(double[][] data, Graphics2D g2d, int cellWidth, int cellHeight) {
+        // Calculate min and max values for color scaling
+        double min = Arrays.stream(data).flatMapToDouble(Arrays::stream).min().orElse(0);
+        double max = Arrays.stream(data).flatMapToDouble(Arrays::stream).max().orElse(1);
 
-    @Test
-    public void whenDescriptiveStatistics_thenCorrect() {
-        DescriptiveStatistics ds=new DescriptiveStatistics();
-        addValues(ds, VALUES);
+        // Draw heatmap cells with y-axis inverted
+        for (int row = 0; row < data.length; row++) {
+            for (int col = 0; col < data[row].length; col++) {
+                double value = data[row][col];
+                Color color = calculateColor(value, min, max);
+                g2d.setColor(color);
+                // Invert y-axis for cell drawing
+                int x = col * cellWidth + margin;
+                int y = (data.length - 1 - row) * cellHeight;
+                g2d.fillRect(x, y, cellWidth, cellHeight);
 
-        System.out.println("ds.getMean() = " + ds.getMean());
-        System.out.println("ds.getStandardDeviation() = " + ds.getStandardDeviation());
+                // Draw value in cell
+                g2d.setColor(Color.BLACK);
+                String text = String.format("%.1f", value);
+                FontMetrics metrics = g2d.getFontMetrics();
+                int textX = x + (cellWidth - metrics.stringWidth(text)) / 2;
+                int textY = y + ((cellHeight - metrics.getHeight()) / 2) + metrics.getAscent();
+                g2d.drawString(text, textX, textY);
+            }
+        }
+    }
+
+    private void drawTitle(String title, Graphics2D g2d) {
+        g2d.setFont(new Font("Serif", Font.BOLD, 20));
+        FontMetrics titleMetrics = g2d.getFontMetrics();
+        int titleX = (width - titleMetrics.stringWidth(title)) / 2;
+        int titleY = titleMetrics.getAscent();
 </file>
 
 
 
-<file file_path=/src/test/java/optimization_apache/TestDepotApacheOptimizers.java>
+<file file_path=/src/test/java/optimization_apache/TestCircleFitting.java>
 
-    public static final double COST_TOL = 0.3;
-    public static final double EXPECTED_COST = -0.5 * 2 - 0.5 * 3;
-    DepotModel model;
-    CMAESOptimizer optimizerCm;
-    MultivariateOptimizer optimizerMv;
-    SimplexOptimizer optimizerSm;
+    public static final double REL_TRES_HOLD = 1e-1;
+    public static final double ABS_TRES_HOLD = 1e-0;
+    public static final double[] INITIAL_GUESS = {98.680, 47.345};
+    public static final int NOF_EVAL_MAX = 1000;
+    public static final double DELTA = 1.0e-1;
 
-    @Before
-    public void init() {
-        model= DepotModel.builder()
-                .kList(new double[]{1,2,3})
-                .pMaxList(new double[]{0.5,0.5,0.5})
-                .socList(new double[]{1,1,1})
-                .pDepotMax(1)
-                .barrierWeight(BARRIER_WEIGHT)
-                .barrierWeightQuad(BARRIER_WEIGHT)
-                .socMax(1)
-                .build();
+    @Test
+    public void testCircleFitting2() {
 
-        optimizerMv=new NonLinearConjugateGradientOptimizer(
-                NonLinearConjugateGradientOptimizer.Formula.POLAK_RIBIERE,
-                new SimpleValueChecker(REL_TRES_HOLD,ABS_TRES_HOLD));
+        //x = circle center = (px,py)
+        CircleScalar circle = new CircleScalar();
+        circle.addPoint(30.0, 68.0);
+        circle.addPoint(50.0, -6.0);
+        circle.addPoint(110.0, -20.0);
+        circle.addPoint(35.0, 15.0);
+        circle.addPoint(45.0, 97.0);
+        MultivariateOptimizer optimizer=TestHelper.getConjugateGradientOptimizer(REL_TRES_HOLD, ABS_TRES_HOLD);
+        PointValuePair optimum = TestHelper.gradientOptimize(
+                optimizer,circle.getObjectiveFunction(),circle.getObjectiveFunctionGradient(),
+                INITIAL_GUESS, NOF_EVAL_MAX);
 
-        optimizerCm=new CMAESOptimizer(
-                MAX_ITERATIONS, // Max iterations
-                1e-6, // Stop fitness (tolerance for considering a solution good enough)
-                true, // Whether to generate diagnostics
-                1, // Check period
-                1, // Random seed for reproducibility, use any integer for deterministic results
-                new JDKRandomGenerator(),
-                false,
-                new SimpleValueChecker(REL_TRES_HOLD,ABS_TRES_HOLD)
-        );
+        TestHelper.printPointValuePair(optimum);
+        TestHelper.printOptimizerStats(optimizer);
 
-        optimi
+        Vector2D center = new Vector2D(optimum.getPointRef()[0], optimum.getPointRef()[1]);
+        Assert.assertEquals(69.960161753, circle.getRadius(center), DELTA);
+        Assert.assertEquals(96.075902096, center.getX(), DELTA);
+        Assert.assertEquals(48.135167894, center.getY(), DELTA);
+    }
+
+}
+
 </file>
 
 
@@ -484,6 +263,20 @@ public class DataGenerator {
         return data;
     }
 
+}
+
+</file>
+
+
+
+<file file_path=/src/test/java/optimization_apache/TestBowlOptimizationNelderMeadSimplex.java>
+
+
+        Vector2D point = new Vector2D(result.getPointRef()[0], result.getPointRef()[1]);
+        System.out.println("point = " + point);
+        Assert.assertEquals(0, point.getX(), DELTA);
+        Assert.assertEquals(0, point.getY(), DELTA);
+    }
 }
 
 </file>

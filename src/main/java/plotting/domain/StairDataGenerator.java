@@ -6,6 +6,18 @@ import org.apache.commons.math3.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
+/*
+                       ______
+  stairs example:  ___|      |_____  (0,1,0)
+
+  converts xy data to stair data
+
+  example data:
+  x=[0, 1, 2], y=[0, 1, 0]  =>
+  x=[0.0, 1.0, 1.0, 2.0, 2.0, 3.0], y=[0.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+
+ */
+
 public class StairDataGenerator {
 
     private StairDataGenerator() {
@@ -46,10 +58,10 @@ public class StairDataGenerator {
         int len = xData.length;
         double max = Arrays.stream(xData).max().orElseThrow();
         double min = Arrays.stream(xData).min().orElseThrow();
-        double step = (max - min) / len;
+        double deltaX = (max - min) / (len-1);
         xStairData.add(xData[len - 1]);
         yStairData.add(yData[yData.length - 1]);
-        xStairData.add(xData[len - 1] + step);
+        xStairData.add(xData[len - 1] + deltaX);
         yStairData.add(yData[yData.length - 1]);
     }
 
