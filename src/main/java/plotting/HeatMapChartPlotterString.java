@@ -3,13 +3,13 @@ package plotting;
 
 import plotting.domain.SwingShowHeatMap;
 
-public class HeatMapChartPlotterDouble {
+public class HeatMapChartPlotterString {
 
         public static void main(String[] args) {
-            double[][] data = {
-                    {1.0, 2.0, 3.0},
-                    {2.0, 3.0, 4.0},
-                    {5.0, 4.0, 5.0}
+            String[][] data = {
+                    {"a", "a", "a"},
+                    {"b", "b", "b"},
+                    {"c", "c", "c"}
             };
 
 

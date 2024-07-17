@@ -50,14 +50,19 @@ public class HeatMapChartPlotterInt {
         chart.addSeries("a", xData, yData, data);
     }
 
-    private static void addCellText(org.knowm.xchart.HeatMapChart chart, int[][] data) {
+    private static void addCellText(HeatMapChart chart, int[][] data) {
         for (int y = 0; y < data.length; y++) {
             for (int x = 0; x < data[y].length; x++) {
                 String text = String.valueOf(data[y][x]);
-                AnnotationText annotation = new AnnotationText(text, x,y, false);
-                chart.addAnnotation(annotation); // Hypothetical method to add text
+                addTextToChart(chart, y, x, text);
             }
         }
+    }
+
+
+    private static void addTextToChart(HeatMapChart chart, int y, int x, String text) {
+        AnnotationText annotation = new AnnotationText(text, x, y, false);
+        chart.addAnnotation(annotation);
     }
 
 
