@@ -147,3 +147,9 @@ e
 5src/main/java/plotting/HeatMapChartPlotterString.java,c\5\c5105a61077e8a1bab3a329feb9697e1bfabc878
 U
 %src/main/java/plotting/ShowTable.java,b\7\b78c0da2cc14dc949cbbd4a30210555fb08e2118
+^
+.src/main/java/plotting/domain/TableShower.java,6\2\62902424eb1e61c68b56d89a29597e101dce82e8
+`
+0src/main/java/plotting/domain/TableSettings.java,2\d\2df24c8126b2b251b4cacd6f4e974a93faf93230
+\
+,src/main/java/plotting/domain/TableData.java,e\b\eb8108a4c07eeeb92b51df5298a00cac957ee9ae
