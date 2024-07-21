@@ -1,26 +1,25 @@
 
 P
-java:S1118
-":Add a private constructor to hide the implicit public one.(öÏå
+java:S1118":Add a private constructor to hide the implicit public one.(öÏå
 L
-java:S1612"6Replace this lambda with method reference 'Math::abs'.(ÇËÙà
+java:S1612"6Replace this lambda with method reference 'Math::abs'.(ÇËÙà
 Y
-java:S1155)">Use isEmpty() to check whether the collection is empty or not.(á‡Ÿüşÿÿÿÿ
+java:S1155*">Use isEmpty() to check whether the collection is empty or not.(á‡Ÿüşÿÿÿÿ
 H
-java:S11351"2Complete the task associated to this TODO comment.(äæ®Ô
+java:S11352"2Complete the task associated to this TODO comment.(äæ®Ô
 Y
-java:S11554">Use isEmpty() to check whether the collection is empty or not.(á‡Ÿüşÿÿÿÿ
+java:S11555">Use isEmpty() to check whether the collection is empty or not.(á‡Ÿüşÿÿÿÿ
 h
-java:S6204A"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(œçÖß
+java:S6204B"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(œçÖß
 h
-java:S6204G"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+java:S6204H"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
 h
-java:S6204U"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+java:S6204V"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
 h
-java:S6204["RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+java:S6204\"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
 h
-java:S6204g"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+java:S6204h"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
 h
-java:S6204u"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
+java:S6204v"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹
 u
-java:S6204È"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ğİŠÿÿÿÿÿ8˜Úšçâ1
+java:S6204Ï"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ğİŠÿÿÿÿÿ8˜Úšçâ1

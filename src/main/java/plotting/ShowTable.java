@@ -7,16 +7,15 @@ import javax.swing.*;
 public class ShowTable {
 
     public static void main(String[] args) {
-        int nX = 10;
-        int nY = 5;
+        int nX = 15;
+        int nY = 15;
 
-       // var tableData=TableDataDouble.ofMat(createDoubleTableData(nX,nY));
-        var tableData= TableDataString.ofMat(createStringTableData(nX,nY));
-        var settings=TableSettings.defOfNxNy(nX,nY);
+        var settings=TableSettings.defOfNxNy(nX,nY); //.withNYstart(0).withNYend(1);
+
+        var tableData=TableDataDouble.ofMatAndSettings(createDoubleTableData(nX,nY),settings);
+       //var  tableData= TableDataString.ofMat(createStringTableData(nX,nY));
         var tableShower=new TableShower(settings);
-        SwingUtilities.invokeLater(() -> {
-            tableShower.showTable(tableData);
-        });
+        SwingUtilities.invokeLater(() -> tableShower.showTable(tableData));
     }
 
     static Double[][] createDoubleTableData(int nX, int nY) {

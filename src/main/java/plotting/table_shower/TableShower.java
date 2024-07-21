@@ -1,9 +1,11 @@
 package plotting.table_shower;
 
+import common.ListUtils;
 import lombok.AllArgsConstructor;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.stream.IntStream;
 
 @AllArgsConstructor
 public class TableShower {
@@ -22,24 +24,35 @@ public class TableShower {
 
     String[] createColumnNames(int nX) {
         String[] columnNames = new String[nX+1];
-        columnNames[0] = "y \\ x";
-        for (int xi = 1; xi <= nX; xi++) {
-            columnNames[xi] = "" + (xi - 1);
-        }
+        columnNames[0] = settings.yName()+"\\"+settings.xName();
+        var xSpace= ListUtils.doublesStartStepNitems(settings.nXstart(),settings.nXstep(),nX);
+        var doubleList= xSpace.stream().map(n ->  String.format(settings.format(),n)).toList();
+        int startNameIndex = 1;
+        IntStream.range(0, doubleList.size())
+                .forEach(i -> columnNames[i + startNameIndex] = doubleList.get(i));
         return columnNames;
     }
 
+
+
     Object[][] createTableData(TableDataI data0) {
         Object[][] data = new Object[settings.nY()][settings.nX() + 1];
+        String[] rowNames=createRowNames(settings.nY());
         for (int yi = 0; yi < settings.nY(); yi++) {
             int y0i = settings.nY() - yi - 1; // Reverse the order of y values
-            data[yi][0] = "" + y0i;
+            data[yi][0] = rowNames[yi];
             for (int xi = 1; xi <= settings.nX(); xi++) {
                 int x0i = xi - 1;
                 data[yi][xi] = data0.read(x0i,y0i);
             }
         }
         return data;
+    }
+
+    String[] createRowNames(int nY) {
+        var ySpace= ListUtils.doublesStartStepNitems(settings.nYstart(),settings.nYstep(),nY);
+        return ySpace.stream()
+                .map(n -> String.format(settings.format(), n)).toArray(String[]::new);
     }
 
     JFrame createFrame(JTable table, int frameHeight, int frameWidth) {
