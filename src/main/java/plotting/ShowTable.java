@@ -1,8 +1,7 @@
 package plotting;
 
-import plotting.table_shower.TableData;
-import plotting.table_shower.TableSettings;
-import plotting.table_shower.TableShower;
+import plotting.table_shower.*;
+
 import javax.swing.*;
 
 public class ShowTable {
@@ -10,8 +9,9 @@ public class ShowTable {
     public static void main(String[] args) {
         int nX = 10;
         int nY = 5;
-      //  var tableData= TableData.ofDouble(createDoubleTableData(nX, nY));
-        var tableData= TableData.ofString(createStringTableData(nX, nY));
+
+       // var tableData=TableDataDouble.ofMat(createDoubleTableData(nX,nY));
+        var tableData= TableDataString.ofMat(createStringTableData(nX,nY));
         var settings=TableSettings.defOfNxNy(nX,nY);
         var tableShower=new TableShower(settings);
         SwingUtilities.invokeLater(() -> {

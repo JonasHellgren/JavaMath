@@ -18,7 +18,7 @@ public class TableDataDouble implements TableDataI {
 
     @Override
     public String read(int x, int y) {
-        Preconditions.checkArgument(x<doubleMat[0].length && y<doubleMat.length,"Bad x/y");
+        Preconditions.checkArgument(y<doubleMat[0].length && x<doubleMat.length,"Bad x/y");
         return String.format(format, doubleMat[x][y]);
     }
 }

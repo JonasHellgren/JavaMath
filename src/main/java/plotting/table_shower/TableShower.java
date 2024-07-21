@@ -10,7 +10,7 @@ public class TableShower {
 
     TableSettings settings;
 
-    public void showTable(TableData data0) {
+    public void showTable(TableDataI data0) {
         String[] columnNames = createColumnNames(settings.nX());
         Object[][] data = createTableData(data0);
         var table = createTable(data, columnNames);
@@ -29,16 +29,14 @@ public class TableShower {
         return columnNames;
     }
 
-    Object[][] createTableData(TableData data0) {
+    Object[][] createTableData(TableDataI data0) {
         Object[][] data = new Object[settings.nY()][settings.nX() + 1];
         for (int yi = 0; yi < settings.nY(); yi++) {
             int y0i = settings.nY() - yi - 1; // Reverse the order of y values
             data[yi][0] = "" + y0i;
             for (int xi = 1; xi <= settings.nX(); xi++) {
                 int x0i = xi - 1;
-                data[yi][xi] = data0.isDouble()
-                        ? String.format(settings.format(), data0.doubleMat()[x0i][y0i])
-                        : data0.stringMat()[x0i][y0i];
+                data[yi][xi] = data0.read(x0i,y0i);
             }
         }
         return data;
