@@ -87,8 +87,6 @@ V
 0src/main/java/plotting/TradingChartsExample.java,2\2\22354039e4c4d91a227ebccb8271b7711c6fc266
 e
 5src/main/java/plotting/HeatMapChartPlotterDouble.java,4\6\46a8d0f01a4f32125885dac5b7e163140018612f
-\
-,src/main/java/plotting/SwingShowHeatMap.java,9\f\9f4ef01f3315ce01b9c2921efc75b275c6a3656d
 S
 #src/main/java/apache_common/info.md,1\4\148f229385527144c04d85ed380028ead7471797
 k
@@ -153,3 +151,13 @@ U
 0src/main/java/plotting/domain/TableSettings.java,2\d\2df24c8126b2b251b4cacd6f4e974a93faf93230
 \
 ,src/main/java/plotting/domain/TableData.java,e\b\eb8108a4c07eeeb92b51df5298a00cac957ee9ae
+f
+6src/main/java/plotting/table_shower/TableSettings.java,d\0\d004d0f77495040fb63f52691327b80adf082da0
+d
+4src/main/java/plotting/table_shower/TableShower.java,7\4\740818c75d8ad6f7b2384ddd3019a85f831e8356
+c
+3src/main/java/plotting/table_shower/TableDataI.java,4\a\4af1f1c13a1cfae509a141c175e3de4b4f60f946
+h
+8src/main/java/plotting/table_shower/TableDataDouble.java,d\3\d37922bfc28190e7b85785cb04a751a3e3feb61d
+h
+8src/main/java/plotting/table_shower/TableDataString.java,1\6\1603d382796cbfc38f073324290fd08e58791a28

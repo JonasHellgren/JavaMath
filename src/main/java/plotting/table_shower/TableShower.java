@@ -1,7 +1,6 @@
-package plotting.domain;
+package plotting.table_shower;
 
 import lombok.AllArgsConstructor;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -17,12 +16,12 @@ public class TableShower {
         var table = createTable(data, columnNames);
         int frameHeight = getFrameHeight(table);
         int frameWidth = getFrameWidth(table);
-        JFrame frame = createFrame(table, frameHeight, frameWidth);
+        var frame = createFrame(table, frameHeight, frameWidth);
         frame.setVisible(true);
     }
 
     String[] createColumnNames(int nX) {
-        String[] columnNames = new String[11];
+        String[] columnNames = new String[nX+1];
         columnNames[0] = "y \\ x";
         for (int xi = 1; xi <= nX; xi++) {
             columnNames[xi] = "" + (xi - 1);

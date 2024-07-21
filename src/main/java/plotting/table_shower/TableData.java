@@ -1,4 +1,4 @@
-package plotting.domain;
+package plotting.table_shower;
 
 import com.google.common.base.Preconditions;
 import lombok.Builder;

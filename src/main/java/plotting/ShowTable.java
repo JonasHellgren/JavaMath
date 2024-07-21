@@ -1,8 +1,8 @@
 package plotting;
 
-import plotting.domain.TableData;
-import plotting.domain.TableSettings;
-import plotting.domain.TableShower;
+import plotting.table_shower.TableData;
+import plotting.table_shower.TableSettings;
+import plotting.table_shower.TableShower;
 import javax.swing.*;
 
 public class ShowTable {

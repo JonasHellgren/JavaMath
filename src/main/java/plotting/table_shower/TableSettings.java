@@ -1,4 +1,4 @@
-package plotting.domain;
+package plotting.table_shower;
 
 import lombok.Builder;
 import lombok.NonNull;
