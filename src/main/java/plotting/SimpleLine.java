@@ -10,7 +10,9 @@ import static org.knowm.xchart.VectorGraphicsEncoder.saveVectorGraphic;
 
 public class SimpleLine {
 
-    public static final String CHART_DIR = "src/main/java/xchart/saved_charts/", FILE_NAME = "Sample_Chart";
+    static final String FILE_NAME = "Sample_Chart";
+    static final String CHART_DIR = "src/main/java/plotting/saved_charts/";
+
 
     public static void main(String[] args) throws Exception {
         double[] xData = new double[]{0.0, 1.0, 2.0};

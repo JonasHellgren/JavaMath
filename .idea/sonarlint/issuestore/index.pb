@@ -157,3 +157,7 @@ h
 8src/main/java/plotting/table_shower/TableDataString.java,1\6\1603d382796cbfc38f073324290fd08e58791a28
 k
 ;src/main/java/plotting/table_shower/XYAxisTicksCreator.java,0\7\07381ebf5643f3fe823b279213d8ef5f35c3353a
+m
+=src/main/java/plotting/table_shower/FrameAndTableCreator.java,d\3\d3d98b6476819999b348ffeeec03fda070cf8367
+h
+8src/main/java/plotting/table_shower/TableFrameSaver.java,8\8\88a726d267085e799c41dfb44ac8e0275b75b7af

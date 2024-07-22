@@ -19,6 +19,7 @@ public class XYAxisTicksCreator {
     TableSettings s;
 
     public String[] columnNames() {
+        System.out.println("s.isNofColNamesOk() = " + s.isNofColNamesOk());
         Preconditions.checkArgument(s.isNofColNamesOk(),"Bad nof col names");
         String[] columnNames = new String[s.nX() + 1];
         columnNames[0] = s.yName() + "\\" + s.xName();
@@ -37,7 +38,7 @@ public class XYAxisTicksCreator {
 
     List<String> getNumbersAsStringList() {
         var xSpace = ListUtils.doublesStartStepNitems(s.nXstart(), s.nXstep(), s.nX());
-        return xSpace.stream().map(n -> String.format(s.format(), n)).toList();
+        return xSpace.stream().map(n -> String.format(s.formatTicks(), n)).toList();
     }
 
     void replaceFromIndexOne(String[] columnNames, List<String> doubleList) {
@@ -52,7 +53,7 @@ public class XYAxisTicksCreator {
 
     String[] double2String(List<Double> ySpace) {
         return ySpace.stream()
-                .map(n -> String.format(s.format(), n)).toArray(String[]::new);
+                .map(n -> String.format(s.formatTicks(), n)).toArray(String[]::new);
     }
 
 

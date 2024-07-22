@@ -19,4 +19,14 @@ public class TableDataString implements TableDataI{
         Preconditions.checkArgument(y<stringMat[0].length && x<stringMat.length,"Bad x/y");
         return stringMat[x][y];
     }
+
+    @Override
+    public int nX() {
+        return stringMat.length;
+    }
+
+    @Override
+    public int nY() {
+        return stringMat[0].length;
+    }
 }
