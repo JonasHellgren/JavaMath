@@ -8,7 +8,8 @@ public class TableDataDouble implements TableDataI {
     Double[][] doubleMat;
     TableSettings settings;
 
-    public static TableDataDouble ofMatAndSettings(Double[][] doubleMat, TableSettings settings) {
+    public static TableDataDouble ofMatAndSettings(Double[][] doubleMat,
+                                                   TableSettings settings) {
         return TableDataDouble.builder()
                 .doubleMat(doubleMat)
                 .settings(settings)
@@ -17,7 +18,8 @@ public class TableDataDouble implements TableDataI {
 
     @Override
     public String read(int x, int y) {
-        Preconditions.checkArgument(y<doubleMat[0].length && x<doubleMat.length,"Bad x/y");
+        Preconditions.checkArgument(y<doubleMat[0].length && x<doubleMat.length,
+                "Bad x/y");
         return String.format(settings.formatCell(), doubleMat[x][y]);
     }
 

@@ -24,7 +24,8 @@ public record TableSettings(
         @With double nXend,
         @With double nYstart,
         @With double nYend,
-        @With boolean isScrollPane
+        @With boolean isScrollPane,
+        @With boolean isReverseY
 ) {
 
     public static TableSettings ofNxNy(int nX, int nY) {
@@ -37,7 +38,7 @@ public record TableSettings(
                 .colNames(Optional.empty()).rowNames(Optional.empty())
                 .nXstart(0).nXend(nX)
                 .nYstart(0).nYend(nY)
-                .isScrollPane(true)
+                .isScrollPane(true).isReverseY(true)
                 .build();
     }
 
@@ -63,4 +64,5 @@ public record TableSettings(
     public boolean isDataOk(TableDataI data0) {
         return data0.nX()==nX && data0.nY()==nY;
     }
+
 }

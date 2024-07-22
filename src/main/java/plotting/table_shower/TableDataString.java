@@ -5,7 +5,6 @@ import lombok.Builder;
 
 @Builder
 public class TableDataString implements TableDataI{
-
     String[][] stringMat;
 
     public static TableDataString ofMat(String[][] stringMat) {
@@ -16,7 +15,8 @@ public class TableDataString implements TableDataI{
 
     @Override
     public String read(int x, int y) {
-        Preconditions.checkArgument(y<stringMat[0].length && x<stringMat.length,"Bad x/y");
+        Preconditions.checkArgument(y<stringMat[0].length && x<stringMat.length,
+                "Bad x/y");
         return stringMat[x][y];
     }
 
