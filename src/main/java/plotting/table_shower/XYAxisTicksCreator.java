@@ -33,7 +33,8 @@ public class XYAxisTicksCreator {
         Preconditions.checkArgument(s.isNofRowNamesOk(),"Bad nof row names");
         return s.colNames().isPresent()
                 ? s.rowNames().orElseThrow()
-                : double2String(ListUtils.doublesStartStepNitems(s.nYstart(), s.nYstep(), s.nY()));
+                : double2String(ListUtils.doublesStartStepNitems(
+                        s.nYstart(), s.nYstep(), s.nY()));
     }
 
     List<String> getNumbersAsStringList() {

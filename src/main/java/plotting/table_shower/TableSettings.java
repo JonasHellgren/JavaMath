@@ -28,6 +28,8 @@ public record TableSettings(
         @With boolean isReverseY
 ) {
 
+    public static final boolean IF_NO_NAMES_THEN_OK = true;
+
     public static TableSettings ofNxNy(int nX, int nY) {
         return TableSettings.builder()
                 .nX(nX).nY(nY)
@@ -38,7 +40,7 @@ public record TableSettings(
                 .colNames(Optional.empty()).rowNames(Optional.empty())
                 .nXstart(0).nXend(nX)
                 .nYstart(0).nYend(nY)
-                .isScrollPane(true).isReverseY(true)
+                .isScrollPane(IF_NO_NAMES_THEN_OK).isReverseY(IF_NO_NAMES_THEN_OK)
                 .build();
     }
 
@@ -51,13 +53,11 @@ public record TableSettings(
     }
 
     public boolean isNofColNamesOk() {
-        return colNames().isEmpty() ||
-                colNames().isPresent() && colNames().orElseThrow().length == nX();
+        return  colNames().map(n -> n.length == nX()).orElse(IF_NO_NAMES_THEN_OK);
     }
 
     public boolean isNofRowNamesOk() {
-        return rowNames().isEmpty() ||
-                rowNames().isPresent() && rowNames().orElseThrow().length == nY();
+        return  rowNames().map(n -> n.length == nY()).orElse(IF_NO_NAMES_THEN_OK);
     }
 
 
