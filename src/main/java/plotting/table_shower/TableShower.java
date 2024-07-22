@@ -1,20 +1,25 @@
 package plotting.table_shower;
 
-import common.ListUtils;
 import lombok.AllArgsConstructor;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.stream.IntStream;
 
 @AllArgsConstructor
 public class TableShower {
 
     TableSettings settings;
+    XYAxisTicksCreator xyAxisTicks;
+
+    public TableShower(TableSettings settings) {
+        this.settings = settings;
+        this.xyAxisTicks =new XYAxisTicksCreator(settings);
+    }
 
     public void showTable(TableDataI data0) {
-        String[] columnNames = createColumnNames(settings.nX());
-        Object[][] data = createTableData(data0);
+        String[] columnNames = xyAxisTicks.columnNames();
+        String[] rowNames = xyAxisTicks.createRowNames();
+        Object[][] data = createTableData(data0, rowNames);
         var table = createTable(data, columnNames);
         int frameHeight = getFrameHeight(table);
         int frameWidth = getFrameWidth(table);
@@ -22,22 +27,11 @@ public class TableShower {
         frame.setVisible(true);
     }
 
-    String[] createColumnNames(int nX) {
-        String[] columnNames = new String[nX+1];
-        columnNames[0] = settings.yName()+"\\"+settings.xName();
-        var xSpace= ListUtils.doublesStartStepNitems(settings.nXstart(),settings.nXstep(),nX);
-        var doubleList= xSpace.stream().map(n ->  String.format(settings.format(),n)).toList();
-        int startNameIndex = 1;
-        IntStream.range(0, doubleList.size())
-                .forEach(i -> columnNames[i + startNameIndex] = doubleList.get(i));
-        return columnNames;
-    }
 
 
 
-    Object[][] createTableData(TableDataI data0) {
+    Object[][] createTableData(TableDataI data0, String[] rowNames) {
         Object[][] data = new Object[settings.nY()][settings.nX() + 1];
-        String[] rowNames=createRowNames(settings.nY());
         for (int yi = 0; yi < settings.nY(); yi++) {
             int y0i = settings.nY() - yi - 1; // Reverse the order of y values
             data[yi][0] = rowNames[yi];
@@ -49,11 +43,7 @@ public class TableShower {
         return data;
     }
 
-    String[] createRowNames(int nY) {
-        var ySpace= ListUtils.doublesStartStepNitems(settings.nYstart(),settings.nYstep(),nY);
-        return ySpace.stream()
-                .map(n -> String.format(settings.format(), n)).toArray(String[]::new);
-    }
+
 
     JFrame createFrame(JTable table, int frameHeight, int frameWidth) {
         JFrame frame = new JFrame(settings.name());

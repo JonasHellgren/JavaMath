@@ -1,3 +1,6 @@
 enkla exempel joptimizer
 joptimizer på depotcharge
 
+XYAxisTicksCreator
+getFrameWidth och getFrameHeight i settings
+FrameAndTableCreator

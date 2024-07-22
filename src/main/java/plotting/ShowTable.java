@@ -1,16 +1,19 @@
 package plotting;
 
 import plotting.table_shower.*;
-
 import javax.swing.*;
+import java.util.Optional;
 
 public class ShowTable {
 
     public static void main(String[] args) {
-        int nX = 15;
-        int nY = 15;
+        int nX = 5;
+        int nY = 5;
 
-        var settings=TableSettings.defOfNxNy(nX,nY); //.withNYstart(0).withNYend(1);
+        //var settings=TableSettings.defOfNxNy(nX,nY); //.withNYstart(0).withNYend(1);
+        var settings=TableSettings.defOfNxNy(nX,nY)
+                .withColNames(Optional.of(new String[]{"A","B","C","D","E"}))
+                .withRowNames(Optional.of(new String[]{"r0","r1","r2","r3","r4"}));
 
         var tableData=TableDataDouble.ofMatAndSettings(createDoubleTableData(nX,nY),settings);
        //var  tableData= TableDataString.ofMat(createStringTableData(nX,nY));
