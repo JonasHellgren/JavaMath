@@ -1,5 +1,6 @@
 package plotting.table_shower;
 
+import com.google.common.base.Preconditions;
 import lombok.AllArgsConstructor;
 import org.checkerframework.checker.units.qual.A;
 
@@ -9,6 +10,7 @@ import java.awt.*;
 
 @AllArgsConstructor
 public class FrameAndTableCreator {
+    public static final int N_COLS_ROW_NAMES = 1;
 
     TableSettings settings;
 
@@ -50,6 +52,24 @@ public class FrameAndTableCreator {
         int rowHeight = getHeight(table);
         table.setRowHeight(rowHeight);
         return table;
+    }
+
+
+    // isReverseY()=true => reverse y order, data[yi][..]=..[nY-yi-1] => y min in bottom
+
+    Object[][] createTableData(TableDataI data0, String[] rowNames) {
+        Preconditions.checkArgument(settings.isDataOk(data0),
+                "nX/ny not equal to nof cols/rows in data");
+        Object[][] data = new Object[settings.nY()][settings.nX() + N_COLS_ROW_NAMES];
+        for (int yi = 0; yi < settings.nY(); yi++) {
+            int y0i = settings.isReverseY() ? settings.nY() - yi - 1:yi;
+            data[yi][0] = rowNames[y0i];
+            for (int xi = N_COLS_ROW_NAMES; xi <= settings.nX(); xi++) {
+                int x0i = xi - N_COLS_ROW_NAMES;
+                data[yi][xi] = data0.read(x0i,y0i);
+            }
+        }
+        return data;
     }
 
     int getHeight(JTable table) {

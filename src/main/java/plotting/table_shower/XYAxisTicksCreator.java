@@ -19,7 +19,6 @@ public class XYAxisTicksCreator {
     TableSettings s;
 
     public String[] columnNames() {
-        System.out.println("s.isNofColNamesOk() = " + s.isNofColNamesOk());
         Preconditions.checkArgument(s.isNofColNamesOk(),"Bad nof col names");
         String[] columnNames = new String[s.nX() + 1];
         columnNames[0] = s.yName() + "\\" + s.xName();
